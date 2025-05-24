@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
 import { PropertyFormData } from '@/types/propertyTypes';
 
 interface HouseSizeStepProps {
@@ -22,6 +23,20 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
 
   const handlePlotAreaChange = (value: number[]) => {
     updateFormData({ plotArea: value[0] });
+  };
+
+  const handleLivingAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 40 && value <= 500) {
+      updateFormData({ livingArea: value });
+    }
+  };
+
+  const handlePlotAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 100 && value <= 2000) {
+      updateFormData({ plotArea: value });
+    }
   };
 
   return (
@@ -51,12 +66,26 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
             onValueChange={handleLivingAreaChange}
             min={40}
             max={500}
-            step={5}
+            step={1}
             className="w-full"
           />
           <div className="flex justify-between text-sm text-muted-foreground mt-2">
             <span>40 m²</span>
             <span>500 m²</span>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="w-32">
+            <Input
+              type="number"
+              min="40"
+              max="500"
+              value={livingAreaValue}
+              onChange={handleLivingAreaInputChange}
+              className="text-center text-lg font-semibold"
+              placeholder="m²"
+            />
           </div>
         </div>
       </div>
@@ -86,12 +115,26 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
             onValueChange={handlePlotAreaChange}
             min={100}
             max={2000}
-            step={25}
+            step={1}
             className="w-full"
           />
           <div className="flex justify-between text-sm text-muted-foreground mt-2">
             <span>100 m²</span>
             <span>2000 m²</span>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="w-32">
+            <Input
+              type="number"
+              min="100"
+              max="2000"
+              value={plotAreaValue}
+              onChange={handlePlotAreaInputChange}
+              className="text-center text-lg font-semibold"
+              placeholder="m²"
+            />
           </div>
         </div>
       </div>

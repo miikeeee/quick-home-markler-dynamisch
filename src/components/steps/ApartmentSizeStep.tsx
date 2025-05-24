@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
 import { ChoiceButton } from '../ChoiceButton';
 import { PropertyFormData } from '@/types/propertyTypes';
 
@@ -18,6 +19,13 @@ export const ApartmentSizeStep: React.FC<ApartmentSizeStepProps> = ({
 
   const handleLivingAreaChange = (value: number[]) => {
     updateFormData({ livingArea: value[0] });
+  };
+
+  const handleLivingAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 25 && value <= 200) {
+      updateFormData({ livingArea: value });
+    }
   };
 
   const floorOptions = [
@@ -57,12 +65,26 @@ export const ApartmentSizeStep: React.FC<ApartmentSizeStepProps> = ({
             onValueChange={handleLivingAreaChange}
             min={25}
             max={200}
-            step={5}
+            step={1}
             className="w-full"
           />
           <div className="flex justify-between text-sm text-muted-foreground mt-2">
             <span>25 m²</span>
             <span>200 m²</span>
+          </div>
+        </div>
+
+        <div className="flex justify-center">
+          <div className="w-32">
+            <Input
+              type="number"
+              min="25"
+              max="200"
+              value={livingAreaValue}
+              onChange={handleLivingAreaInputChange}
+              className="text-center text-lg font-semibold"
+              placeholder="m²"
+            />
           </div>
         </div>
 
