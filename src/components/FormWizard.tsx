@@ -3,6 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FormContainer } from './FormContainer';
 import { NavigationButtons } from './NavigationButtons';
+import { LoadingScreen } from './LoadingScreen';
 import { PropertyTypeStep } from './steps/PropertyTypeStep';
 import { HouseTypeStep } from './steps/HouseTypeStep';
 import { LivingAreaStep } from './steps/LivingAreaStep';
@@ -67,6 +68,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState<PropertyFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const { toast } = useToast();
 
   const allSteps: FormStep[] = [
@@ -372,6 +374,10 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
 
   const currentStep = applicableSteps[currentStepIndex];
   const StepComponent = currentStep.component;
+
+  if (showLoading) {
+    return <LoadingScreen isVisible={showLoading} />;
+  }
 
   return (
     <FormContainer
