@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
@@ -27,7 +28,7 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "choice-button w-full text-left",
+        "choice-button group w-full text-left",
         selected && "selected",
         className
       )}
@@ -71,3 +72,4 @@ export const ChoiceButton: React.FC<ChoiceButtonProps> = ({
     </motion.button>
   );
 };
+

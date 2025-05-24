@@ -1,4 +1,5 @@
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -101,7 +102,7 @@
   }
   
   .choice-button {
-    @apply relative group overflow-hidden rounded-xl border-2 border-transparent bg-gradient-to-br from-white to-gray-50 p-6 text-left transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary/20;
+    @apply relative overflow-hidden rounded-xl border-2 border-transparent bg-gradient-to-br from-white to-gray-50 p-6 text-left transition-all duration-300 hover:border-primary/20 hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary/20;
   }
   
   .choice-button.selected {
@@ -135,3 +136,4 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--primary));
 }
+
