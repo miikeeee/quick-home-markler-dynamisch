@@ -1,13 +1,38 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import { FormWizard } from '@/components/FormWizard';
+import { ResultsPage } from '@/components/ResultsPage';
+import { WebhookResponseData } from '@/types/propertyTypes';
 
 const Index = () => {
+  const [currentView, setCurrentView] = useState<'form' | 'results'>('form');
+  const [resultsData, setResultsData] = useState<WebhookResponseData | null>(null);
+
+  const handleFormComplete = (data: WebhookResponseData) => {
+    setResultsData(data);
+    setCurrentView('results');
+  };
+
+  const handleBackToForm = () => {
+    setCurrentView('form');
+  };
+
+  const handleEditForm = () => {
+    setCurrentView('form');
+  };
+
+  if (currentView === 'results' && resultsData) {
+    return (
+      <ResultsPage
+        data={resultsData}
+        onBack={handleBackToForm}
+        onEdit={handleEditForm}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <FormWizard onComplete={handleFormComplete} />
   );
 };
 
