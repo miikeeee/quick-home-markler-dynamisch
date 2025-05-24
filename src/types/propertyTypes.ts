@@ -5,12 +5,17 @@ export interface PropertyFormData {
   houseType?: string | null;
   livingArea: number | null;
   plotArea?: number | null; // Only for houses
+  floorLevel?: string | null; // Only for apartments
   roomCount: number | null;
   yearBuilt: string | null;
   
+  // House specific
+  hasBasement?: boolean | null;
+  basementType?: string | null;
+  
   // Apartment specific
-  floorLevel?: string | null;
   hasElevator?: boolean | null;
+  monthlyFee?: number | null; // Hausgeld
   
   // Location
   zipCode: string | null;
@@ -26,6 +31,8 @@ export interface PropertyFormData {
   } | null;
   equipmentQuality: string | null;
   heatingType: string | null;
+  windowType: string | null;
+  flooringType: string[] | null;
   kitchenDetails: {
     included: boolean;
     condition?: string;
@@ -36,6 +43,10 @@ export interface PropertyFormData {
     available: boolean;
     class?: string;
   } | null;
+  
+  // Rental Info
+  currentlyRented: boolean | null;
+  annualRent?: number | null;
   
   // User Intent
   userIntent: string | null;
@@ -59,8 +70,8 @@ export interface WebhookResponseData {
   value_range_max_eur: number | null;
   price_per_sqm_avg_eur: number | null;
   valuation_confidence: 'hoch' | 'mittel' | 'gering' | null;
-  key_positive_value_drivers: string[] | null;
-  key_negative_value_drivers: string[] | null;
+  positive_value_drivers: string[] | null;
+  negative_value_drivers: string[] | null;
   local_market_trend_info: string | null;
   comparable_properties_nearby?: ComparisonProperty[] | null;
 }

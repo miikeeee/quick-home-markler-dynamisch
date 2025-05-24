@@ -11,12 +11,17 @@ import {
   Square,
   CheckCircle2,
   AlertCircle,
-  Star
+  Star,
+  Settings
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
 import { WebhookResponseData } from '@/types/propertyTypes';
 
 interface ResultsPageProps {
@@ -27,6 +32,12 @@ interface ResultsPageProps {
 
 export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [comparisonDialogOpen, setComparisonDialogOpen] = useState(false);
+  const [comparisonParams, setComparisonParams] = useState({
+    livingArea: 120,
+    location: '',
+    condition: 'good'
+  });
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return 'N/A';
@@ -45,6 +56,13 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }
       case 'gering': return 'bg-red-100 text-red-800 border-red-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
+  };
+
+  const handleComparisonUpdate = async () => {
+    // This would trigger a new webhook call with the updated parameters
+    console.log('Updating comparison with:', comparisonParams);
+    // For now, just close the dialog
+    setComparisonDialogOpen(false);
   };
 
   return (
@@ -162,14 +180,14 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {data.key_positive_value_drivers && (
+                    {data.positive_value_drivers && (
                       <div>
                         <h4 className="font-medium text-success-700 mb-2 flex items-center gap-2">
                           <CheckCircle2 className="h-4 w-4" />
                           Positive Faktoren
                         </h4>
                         <ul className="space-y-1">
-                          {data.key_positive_value_drivers.map((driver, index) => (
+                          {data.positive_value_drivers.map((driver, index) => (
                             <li key={index} className="text-sm text-muted-foreground">
                               • {driver}
                             </li>
@@ -178,14 +196,14 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }
                       </div>
                     )}
                     
-                    {data.key_negative_value_drivers && data.key_negative_value_drivers.length > 0 && (
+                    {data.negative_value_drivers && data.negative_value_drivers.length > 0 && (
                       <div>
                         <h4 className="font-medium text-orange-700 mb-2 flex items-center gap-2">
                           <AlertCircle className="h-4 w-4" />
                           Verbesserungspotential
                         </h4>
                         <ul className="space-y-1">
-                          {data.key_negative_value_drivers.map((driver, index) => (
+                          {data.negative_value_drivers.map((driver, index) => (
                             <li key={index} className="text-sm text-muted-foreground">
                               • {driver}
                             </li>
@@ -251,14 +269,57 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }
 
             {/* Comparison Tab */}
             <TabsContent value="comparison" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-xl font-semibold">Vergleichsobjekte</h3>
+                  <p className="text-muted-foreground">Ähnliche Immobilien in Ihrer Umgebung</p>
+                </div>
+                <Dialog open={comparisonDialogOpen} onOpenChange={setComparisonDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="flex items-center gap-2">
+                      <Settings className="h-4 w-4" />
+                      Parameter anpassen
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Vergleichsparameter anpassen</DialogTitle>
+                      <DialogDescription>
+                        Ändern Sie die Parameter für eine aktualisierte Bewertung
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="living-area">Wohnfläche: {comparisonParams.livingArea} m²</Label>
+                        <Slider
+                          id="living-area"
+                          min={50}
+                          max={300}
+                          step={10}
+                          value={[comparisonParams.livingArea]}
+                          onValueChange={(value) => setComparisonParams(prev => ({ ...prev, livingArea: value[0] }))}
+                          className="mt-2"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="location">Anderer Ort (optional)</Label>
+                        <Input
+                          id="location"
+                          placeholder="z.B. München"
+                          value={comparisonParams.location}
+                          onChange={(e) => setComparisonParams(prev => ({ ...prev, location: e.target.value }))}
+                        />
+                      </div>
+                      <Button onClick={handleComparisonUpdate} className="w-full">
+                        Aktualisierte Bewertung erhalten
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+
               <Card>
-                <CardHeader>
-                  <CardTitle>Vergleichsobjekte</CardTitle>
-                  <CardDescription>
-                    Ähnliche Immobilien in Ihrer Umgebung
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
+                <CardContent className="pt-6">
                   {data.comparable_properties_nearby && data.comparable_properties_nearby.length > 0 ? (
                     <div className="grid gap-4">
                       {data.comparable_properties_nearby.map((property) => (

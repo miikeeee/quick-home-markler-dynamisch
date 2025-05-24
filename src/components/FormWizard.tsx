@@ -6,6 +6,27 @@ import { NavigationButtons } from './NavigationButtons';
 import { PropertyTypeStep } from './steps/PropertyTypeStep';
 import { HouseTypeStep } from './steps/HouseTypeStep';
 import { LivingAreaStep } from './steps/LivingAreaStep';
+import { HouseSizeStep } from './steps/HouseSizeStep';
+import { ApartmentSizeStep } from './steps/ApartmentSizeStep';
+import { RoomCountStep } from './steps/RoomCountStep';
+import { YearBuiltStep } from './steps/YearBuiltStep';
+import { BasementStep } from './steps/BasementStep';
+import { ElevatorStep } from './steps/ElevatorStep';
+import { LocationStep } from './steps/LocationStep';
+import { CityStep } from './steps/CityStep';
+import { ConditionStep } from './steps/ConditionStep';
+import { RenovationStep } from './steps/RenovationStep';
+import { EquipmentQualityStep } from './steps/EquipmentQualityStep';
+import { HeatingTypeStep } from './steps/HeatingTypeStep';
+import { WindowTypeStep } from './steps/WindowTypeStep';
+import { FlooringTypeStep } from './steps/FlooringTypeStep';
+import { KitchenStep } from './steps/KitchenStep';
+import { OutdoorFeaturesStep } from './steps/OutdoorFeaturesStep';
+import { ParkingStep } from './steps/ParkingStep';
+import { EnergyCertificateStep } from './steps/EnergyCertificateStep';
+import { RentalStatusStep } from './steps/RentalStatusStep';
+import { MonthlyFeeStep } from './steps/MonthlyFeeStep';
+import { UserIntentStep } from './steps/UserIntentStep';
 import { PropertyFormData, FormStep, WebhookResponseData } from '@/types/propertyTypes';
 import { useToast } from '@/hooks/use-toast';
 
@@ -14,20 +35,27 @@ const initialFormData: PropertyFormData = {
   houseType: null,
   livingArea: null,
   plotArea: null,
+  floorLevel: null,
   roomCount: null,
   yearBuilt: null,
-  floorLevel: null,
+  hasBasement: null,
+  basementType: null,
   hasElevator: null,
+  monthlyFee: null,
   zipCode: null,
   city: null,
   conditionGeneral: null,
   renovations: null,
   equipmentQuality: null,
   heatingType: null,
+  windowType: null,
+  flooringType: null,
   kitchenDetails: null,
   outdoorFeatures: null,
   parkingType: null,
   energyCertificate: null,
+  currentlyRented: null,
+  annualRent: null,
   userIntent: null,
 };
 
@@ -44,7 +72,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
   const allSteps: FormStep[] = [
     {
       id: 'property_type',
-      title: 'Was für eine Immobilie möchten Sie bewerten lassen?',
+      title: 'Was möchten Sie bewerten?',
       subtitle: 'Wählen Sie den Typ Ihrer Immobilie aus',
       component: PropertyTypeStep,
     },
@@ -56,10 +84,135 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
       isApplicable: (data) => data.propertyType === 'house',
     },
     {
-      id: 'living_area',
-      title: 'Wie groß ist die Wohnfläche?',
-      subtitle: 'Geben Sie die ungefähre Wohnfläche in Quadratmetern an',
-      component: LivingAreaStep,
+      id: 'house_size',
+      title: 'Größenangaben zu Ihrem Haus',
+      subtitle: 'Wohnfläche und Grundstücksgröße',
+      component: HouseSizeStep,
+      isApplicable: (data) => data.propertyType === 'house',
+    },
+    {
+      id: 'apartment_size',
+      title: 'Angaben zu Ihrer Wohnung',
+      subtitle: 'Wohnfläche und Stockwerk',
+      component: ApartmentSizeStep,
+      isApplicable: (data) => data.propertyType === 'apartment',
+    },
+    {
+      id: 'room_count',
+      title: 'Wie viele Zimmer hat die Immobilie?',
+      subtitle: 'Anzahl der Wohn- und Schlafzimmer (ohne Küche, Bad, Flur)',
+      component: RoomCountStep,
+    },
+    {
+      id: 'year_built',
+      title: 'Wann wurde die Immobilie gebaut?',
+      subtitle: 'Baujahr für die Bewertung',
+      component: YearBuiltStep,
+    },
+    {
+      id: 'basement',
+      title: 'Ist ein Keller vorhanden?',
+      subtitle: 'Kellerausstattung bei Häusern',
+      component: BasementStep,
+      isApplicable: (data) => data.propertyType === 'house',
+    },
+    {
+      id: 'elevator',
+      title: 'Ist ein Aufzug vorhanden?',
+      subtitle: 'Aufzug im Gebäude',
+      component: ElevatorStep,
+      isApplicable: (data) => data.propertyType === 'apartment' && data.floorLevel !== 'erdgeschoss',
+    },
+    {
+      id: 'location',
+      title: 'Wo befindet sich die Immobilie?',
+      subtitle: 'Postleitzahl für die Lageanalyse',
+      component: LocationStep,
+    },
+    {
+      id: 'city',
+      title: 'Ortsangabe',
+      subtitle: 'In welchem Ort befindet sich die Immobilie?',
+      component: CityStep,
+    },
+    {
+      id: 'condition',
+      title: 'Wie ist der allgemeine Zustand?',
+      subtitle: 'Bewerten Sie den Gesamtzustand der Immobilie',
+      component: ConditionStep,
+    },
+    {
+      id: 'renovation',
+      title: 'Sanierungen und Modernisierungen',
+      subtitle: 'Welche Bereiche wurden in den letzten 20 Jahren saniert?',
+      component: RenovationStep,
+    },
+    {
+      id: 'equipment_quality',
+      title: 'Ausstattungsqualität',
+      subtitle: 'Wie bewerten Sie die Qualität der Ausstattung?',
+      component: EquipmentQualityStep,
+    },
+    {
+      id: 'heating_type',
+      title: 'Welche Heizung ist installiert?',
+      subtitle: 'Art der Heizungsanlage',
+      component: HeatingTypeStep,
+    },
+    {
+      id: 'window_type',
+      title: 'Welche Art von Fenstern ist verbaut?',
+      subtitle: 'Fensterausstattung',
+      component: WindowTypeStep,
+    },
+    {
+      id: 'flooring_type',
+      title: 'Welche Bodenbeläge sind vorhanden?',
+      subtitle: 'Art der Bodenbeläge in den Haupträumen',
+      component: FlooringTypeStep,
+    },
+    {
+      id: 'kitchen',
+      title: 'Küchenausstattung',
+      subtitle: 'Ist eine Einbauküche vorhanden?',
+      component: KitchenStep,
+    },
+    {
+      id: 'outdoor_features',
+      title: 'Außenbereiche',
+      subtitle: 'Welche Außenbereiche gehören zur Immobilie?',
+      component: OutdoorFeaturesStep,
+    },
+    {
+      id: 'parking',
+      title: 'Stellplatz oder Garage',
+      subtitle: 'Parkplätze zur Immobilie',
+      component: ParkingStep,
+    },
+    {
+      id: 'energy_certificate',
+      title: 'Energieausweis',
+      subtitle: 'Liegt ein aktueller Energieausweis vor?',
+      component: EnergyCertificateStep,
+    },
+    {
+      id: 'monthly_fee',
+      title: 'Hausgeld',
+      subtitle: 'Monatliche Nebenkosten bei Wohnungen',
+      component: MonthlyFeeStep,
+      isApplicable: (data) => data.propertyType === 'apartment',
+    },
+    {
+      id: 'rental_status',
+      title: 'Vermietungsstatus',
+      subtitle: 'Ist die Immobilie aktuell vermietet?',
+      component: RentalStatusStep,
+    },
+    {
+      id: 'user_intent',
+      title: 'Ihre Absicht',
+      subtitle: 'Warum möchten Sie den Wert Ihrer Immobilie wissen?',
+      component: UserIntentStep,
     },
   ];
 
@@ -81,8 +234,48 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
         return formData.propertyType !== null;
       case 'house_type':
         return formData.houseType !== null;
-      case 'living_area':
-        return formData.livingArea !== null;
+      case 'house_size':
+        return formData.livingArea !== null && formData.plotArea !== null;
+      case 'apartment_size':
+        return formData.livingArea !== null && formData.floorLevel !== null;
+      case 'room_count':
+        return formData.roomCount !== null;
+      case 'year_built':
+        return formData.yearBuilt !== null;
+      case 'basement':
+        return formData.hasBasement !== null;
+      case 'elevator':
+        return formData.hasElevator !== null;
+      case 'location':
+        return formData.zipCode !== null;
+      case 'city':
+        return formData.city !== null;
+      case 'condition':
+        return formData.conditionGeneral !== null;
+      case 'renovation':
+        return true; // Optional step
+      case 'equipment_quality':
+        return formData.equipmentQuality !== null;
+      case 'heating_type':
+        return formData.heatingType !== null;
+      case 'window_type':
+        return formData.windowType !== null;
+      case 'flooring_type':
+        return formData.flooringType !== null && formData.flooringType.length > 0;
+      case 'kitchen':
+        return formData.kitchenDetails !== null;
+      case 'outdoor_features':
+        return true; // Optional step
+      case 'parking':
+        return formData.parkingType !== null;
+      case 'energy_certificate':
+        return formData.energyCertificate !== null;
+      case 'monthly_fee':
+        return formData.monthlyFee !== null;
+      case 'rental_status':
+        return formData.currentlyRented !== null;
+      case 'user_intent':
+        return formData.userIntent !== null;
       default:
         return true;
     }
@@ -108,40 +301,22 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
     try {
       console.log('Submitting form data:', formData);
       
-      // Simulate webhook call
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Mock response data
-      const mockResponse: WebhookResponseData = {
-        estimated_property_value_eur: 485000,
-        value_range_min_eur: 460000,
-        value_range_max_eur: 510000,
-        price_per_sqm_avg_eur: formData.livingArea ? Math.round(485000 / formData.livingArea) : 3500,
-        valuation_confidence: 'hoch',
-        key_positive_value_drivers: [
-          'Moderne Ausstattung',
-          'Gute Lage',
-          'Gepflegter Zustand'
-        ],
-        key_negative_value_drivers: [
-          'Renovierungsbedarf bei der Heizung'
-        ],
-        local_market_trend_info: 'Stabile Nachfrage in der Region',
-        comparable_properties_nearby: [
-          {
-            id: '1',
-            address_snippet: 'Musterstadt, Hauptstraße',
-            property_type_display: 'Einfamilienhaus',
-            living_area_sqm: 120,
-            plot_area_sqm: 500,
-            year_built_display: 'Baujahr 1995',
-            estimated_value_eur: 475000,
-            price_per_sqm_eur: 3958,
-          }
-        ]
-      };
+      const response = await fetch('https://hook.eu2.make.com/8outkmvotmanifh1xzgvg8fb1cgs3s6f', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      onComplete(mockResponse);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const webhookResponse: WebhookResponseData = await response.json();
+      console.log('Webhook response:', webhookResponse);
+      
+      onComplete(webhookResponse);
     } catch (error) {
       console.error('Error submitting form:', error);
       toast({
