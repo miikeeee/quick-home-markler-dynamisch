@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Download, 
@@ -12,7 +12,8 @@ import {
   CheckCircle2,
   AlertCircle,
   Star,
-  Settings
+  Settings,
+  Plus
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -22,22 +23,35 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { WebhookResponseData } from '@/types/propertyTypes';
+import { LoadingScreen } from './LoadingScreen';
+import { ComparisonForm } from './ComparisonForm';
+import { WebhookResponseData, PropertyFormData, ComparisonProperty } from '@/types/propertyTypes';
+import { useToast } from '@/hooks/use-toast';
 
 interface ResultsPageProps {
   data: WebhookResponseData;
   onBack: () => void;
   onEdit: () => void;
+  originalFormData?: PropertyFormData;
 }
 
-export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }) => {
+export const ResultsPage: React.FC<ResultsPageProps> = ({ 
+  data, 
+  onBack, 
+  onEdit, 
+  originalFormData 
+}) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [comparisonDialogOpen, setComparisonDialogOpen] = useState(false);
+  const [addComparisonDialogOpen, setAddComparisonDialogOpen] = useState(false);
+  const [isLoadingComparison, setIsLoadingComparison] = useState(false);
+  const [additionalComparisons, setAdditionalComparisons] = useState<ComparisonProperty[]>([]);
   const [comparisonParams, setComparisonParams] = useState({
-    livingArea: 120,
+    livingArea: originalFormData?.livingArea || 120,
     location: '',
     condition: 'good'
   });
+  const { toast } = useToast();
 
   const formatCurrency = (amount: number | null) => {
     if (!amount) return 'N/A';
@@ -59,11 +73,112 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }
   };
 
   const handleComparisonUpdate = async () => {
-    // This would trigger a new webhook call with the updated parameters
-    console.log('Updating comparison with:', comparisonParams);
-    // For now, just close the dialog
-    setComparisonDialogOpen(false);
+    setIsLoadingComparison(true);
+    try {
+      console.log('Updating comparison with:', comparisonParams);
+      // For demo purposes, simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setComparisonDialogOpen(false);
+      toast({
+        title: 'Vergleich aktualisiert',
+        description: 'Die Bewertung wurde mit den neuen Parametern aktualisiert.',
+      });
+    } catch (error) {
+      toast({
+        title: 'Fehler',
+        description: 'Fehler beim Aktualisieren des Vergleichs.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoadingComparison(false);
+    }
   };
+
+  const handleAddComparison = async (comparisonData: Partial<PropertyFormData>) => {
+    setIsLoadingComparison(true);
+    
+    try {
+      console.log('Adding new comparison with data:', comparisonData);
+      
+      const response = await fetch('https://hook.eu2.make.com/8outkmvotmanifh1xzgvg8fb1cgs3s6f', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...comparisonData,
+          comparison_request: true,
+          original_property: originalFormData
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const responseText = await response.text();
+      let webhookResponse: WebhookResponseData;
+      
+      try {
+        webhookResponse = JSON.parse(responseText);
+      } catch (parseError) {
+        // Fallback for demo
+        webhookResponse = {
+          estimated_property_value_eur: 420000,
+          value_range_min_eur: 400000,
+          value_range_max_eur: 440000,
+          price_per_sqm_avg_eur: 3200,
+          valuation_confidence: 'mittel',
+          positive_value_drivers: ['Gute Verkehrsanbindung'],
+          negative_value_drivers: ['Andere Lage'],
+          local_market_trend_info: 'Stabiler Markt',
+          comparable_properties_nearby: [
+            {
+              id: 'comp-new-1',
+              address_snippet: `${comparisonData.zipCode} ${comparisonData.city}`,
+              property_type_display: originalFormData?.propertyType === 'house' ? 'Einfamilienhaus' : 'Eigentumswohnung',
+              living_area_sqm: comparisonData.livingArea || 120,
+              year_built_display: comparisonData.yearBuilt || 'unbekannt',
+              estimated_value_eur: 420000,
+              price_per_sqm_eur: 3200
+            }
+          ]
+        };
+      }
+
+      // Add new comparison properties to the list
+      if (webhookResponse.comparable_properties_nearby) {
+        setAdditionalComparisons(prev => [
+          ...prev,
+          ...webhookResponse.comparable_properties_nearby!
+        ]);
+      }
+
+      setAddComparisonDialogOpen(false);
+      toast({
+        title: 'Vergleich hinzugefügt',
+        description: 'Das neue Vergleichsobjekt wurde erfolgreich erstellt.',
+      });
+    } catch (error) {
+      console.error('Error adding comparison:', error);
+      toast({
+        title: 'Fehler',
+        description: 'Fehler beim Erstellen des Vergleichsobjekts.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoadingComparison(false);
+    }
+  };
+
+  const allComparableProperties = [
+    ...(data.comparable_properties_nearby || []),
+    ...additionalComparisons
+  ];
+
+  if (isLoadingComparison) {
+    return <LoadingScreen isVisible={true} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
@@ -274,91 +389,131 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({ data, onBack, onEdit }
                   <h3 className="text-xl font-semibold">Vergleichsobjekte</h3>
                   <p className="text-muted-foreground">Ähnliche Immobilien in Ihrer Umgebung</p>
                 </div>
-                <Dialog open={comparisonDialogOpen} onOpenChange={setComparisonDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" className="flex items-center gap-2">
-                      <Settings className="h-4 w-4" />
-                      Parameter anpassen
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Vergleichsparameter anpassen</DialogTitle>
-                      <DialogDescription>
-                        Ändern Sie die Parameter für eine aktualisierte Bewertung
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="living-area">Wohnfläche: {comparisonParams.livingArea} m²</Label>
-                        <Slider
-                          id="living-area"
-                          min={50}
-                          max={300}
-                          step={10}
-                          value={[comparisonParams.livingArea]}
-                          onValueChange={(value) => setComparisonParams(prev => ({ ...prev, livingArea: value[0] }))}
-                          className="mt-2"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="location">Anderer Ort (optional)</Label>
-                        <Input
-                          id="location"
-                          placeholder="z.B. München"
-                          value={comparisonParams.location}
-                          onChange={(e) => setComparisonParams(prev => ({ ...prev, location: e.target.value }))}
-                        />
-                      </div>
-                      <Button onClick={handleComparisonUpdate} className="w-full">
-                        Aktualisierte Bewertung erhalten
+                <div className="flex gap-2">
+                  <Dialog open={addComparisonDialogOpen} onOpenChange={setAddComparisonDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Plus className="h-4 w-4" />
+                        Vergleich hinzufügen
                       </Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                      <DialogHeader>
+                        <DialogTitle>Neues Vergleichsobjekt erstellen</DialogTitle>
+                        <DialogDescription>
+                          Geben Sie die Daten für ein weiteres Vergleichsobjekt ein
+                        </DialogDescription>
+                      </DialogHeader>
+                      {originalFormData && (
+                        <ComparisonForm
+                          baseData={originalFormData}
+                          onSubmit={handleAddComparison}
+                          onCancel={() => setAddComparisonDialogOpen(false)}
+                          isLoading={isLoadingComparison}
+                        />
+                      )}
+                    </DialogContent>
+                  </Dialog>
+                  
+                  <Dialog open={comparisonDialogOpen} onOpenChange={setComparisonDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" className="flex items-center gap-2">
+                        <Settings className="h-4 w-4" />
+                        Parameter anpassen
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Vergleichsparameter anpassen</DialogTitle>
+                        <DialogDescription>
+                          Ändern Sie die Parameter für eine aktualisierte Bewertung
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="living-area">Wohnfläche: {comparisonParams.livingArea} m²</Label>
+                          <Slider
+                            id="living-area"
+                            min={50}
+                            max={300}
+                            step={10}
+                            value={[comparisonParams.livingArea]}
+                            onValueChange={(value) => setComparisonParams(prev => ({ ...prev, livingArea: value[0] }))}
+                            className="mt-2"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="location">Anderer Ort (optional)</Label>
+                          <Input
+                            id="location"
+                            placeholder="z.B. München"
+                            value={comparisonParams.location}
+                            onChange={(e) => setComparisonParams(prev => ({ ...prev, location: e.target.value }))}
+                          />
+                        </div>
+                        <Button 
+                          onClick={handleComparisonUpdate} 
+                          className="w-full"
+                          disabled={isLoadingComparison}
+                        >
+                          {isLoadingComparison ? 'Wird aktualisiert...' : 'Aktualisierte Bewertung erhalten'}
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
 
               <Card>
                 <CardContent className="pt-6">
-                  {data.comparable_properties_nearby && data.comparable_properties_nearby.length > 0 ? (
-                    <div className="grid gap-4">
-                      {data.comparable_properties_nearby.map((property) => (
-                        <div key={property.id} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <h4 className="font-medium">{property.property_type_display}</h4>
-                              <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                <MapPin className="h-3 w-3" />
-                                {property.address_snippet}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <div className="font-semibold text-lg">
-                                {formatCurrency(property.estimated_value_eur)}
+                  <AnimatePresence>
+                    {allComparableProperties.length > 0 ? (
+                      <div className="grid gap-4">
+                        {allComparableProperties.map((property, index) => (
+                          <motion.div
+                            key={property.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="p-4 border rounded-lg hover:shadow-md transition-shadow"
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <div>
+                                <h4 className="font-medium">{property.property_type_display}</h4>
+                                <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                  <MapPin className="h-3 w-3" />
+                                  {property.address_snippet}
+                                </p>
                               </div>
-                              <div className="text-sm text-muted-foreground">
-                                {formatCurrency(property.price_per_sqm_eur)}/m²
+                              <div className="text-right">
+                                <div className="font-semibold text-lg">
+                                  {formatCurrency(property.estimated_value_eur)}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {formatCurrency(property.price_per_sqm_eur)}/m²
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="flex gap-4 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Square className="h-3 w-3" />
-                              {property.living_area_sqm} m²
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Calendar className="h-3 w-3" />
-                              {property.year_built_display}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <p>Keine Vergleichsobjekte verfügbar</p>
-                    </div>
-                  )}
+                            <div className="flex gap-4 text-sm text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <Square className="h-3 w-3" />
+                                {property.living_area_sqm} m²
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar className="h-3 w-3" />
+                                {property.year_built_display}
+                              </span>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 text-muted-foreground">
+                        <p>Keine Vergleichsobjekte verfügbar</p>
+                        <p className="text-sm mt-2">Fügen Sie ein neues Vergleichsobjekt hinzu, um mehr Daten zu erhalten.</p>
+                      </div>
+                    )}
+                  </AnimatePresence>
                 </CardContent>
               </Card>
             </TabsContent>

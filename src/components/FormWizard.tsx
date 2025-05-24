@@ -60,7 +60,7 @@ const initialFormData: PropertyFormData = {
 };
 
 interface FormWizardProps {
-  onComplete: (data: WebhookResponseData) => void;
+  onComplete: (data: WebhookResponseData, formData?: PropertyFormData) => void;
 }
 
 export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
@@ -297,6 +297,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
+    setShowLoading(true);
 
     try {
       console.log('Submitting form data:', formData);
@@ -350,9 +351,15 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
         }
       }
       
-      onComplete(webhookResponse);
+      // Small delay to show the loading animation completion
+      setTimeout(() => {
+        setShowLoading(false);
+        onComplete(webhookResponse, formData);
+      }, 1000);
+      
     } catch (error) {
       console.error('Error submitting form:', error);
+      setShowLoading(false);
       toast({
         title: 'Fehler',
         description: 'Es gab einen Fehler bei der Verarbeitung. Bitte versuchen Sie es erneut.',
