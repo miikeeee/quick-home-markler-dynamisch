@@ -64,19 +64,19 @@ interface FormWizardProps {
   initialFormData?: PropertyFormData;
 }
 
-export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormData }) => {
+export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormData: propInitialFormData }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [formData, setFormData] = useState<PropertyFormData>(initialFormData || initialFormData);
+  const [formData, setFormData] = useState<PropertyFormData>(propInitialFormData || initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const { toast } = useToast();
 
   // Update formData when initialFormData changes
   useEffect(() => {
-    if (initialFormData) {
-      setFormData(initialFormData);
+    if (propInitialFormData) {
+      setFormData(propInitialFormData);
     }
-  }, [initialFormData]);
+  }, [propInitialFormData]);
 
   // Save form data to sessionStorage whenever it changes
   const updateFormData = (newData: Partial<PropertyFormData>) => {
@@ -347,7 +347,14 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormD
               'Modernisierungsbedarf bei einigen Bereichen'
             ],
             local_market_trend_info: 'Stabile Marktentwicklung in der Region',
-            comparable_properties_nearby: []
+            comparable_properties_nearby: [],
+            price_development_data: [
+              { year: '2020', avgPrice: 3200, localPrice: 3150 },
+              { year: '2021', avgPrice: 3350, localPrice: 3300 },
+              { year: '2022', avgPrice: 3500, localPrice: 3450 },
+              { year: '2023', avgPrice: 3400, localPrice: 3380 },
+              { year: '2024', avgPrice: 3500, localPrice: 3500 }
+            ]
           };
           console.log('Using fallback response data');
         } else {
