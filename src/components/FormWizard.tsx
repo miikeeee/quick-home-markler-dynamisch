@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FormContainer } from './FormContainer';
 import { NavigationButtons } from './NavigationButtons';
@@ -43,6 +43,7 @@ const initialFormData: PropertyFormData = {
   monthlyFee: null,
   zipCode: null,
   city: null,
+  street: null,
   conditionGeneral: null,
   renovations: null,
   equipmentQuality: null,
@@ -60,14 +61,29 @@ const initialFormData: PropertyFormData = {
 
 interface FormWizardProps {
   onComplete: (data: WebhookResponseData, formData?: PropertyFormData) => void;
+  initialFormData?: PropertyFormData;
 }
 
-export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
+export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormData }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [formData, setFormData] = useState<PropertyFormData>(initialFormData);
+  const [formData, setFormData] = useState<PropertyFormData>(initialFormData || initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const { toast } = useToast();
+
+  // Update formData when initialFormData changes
+  useEffect(() => {
+    if (initialFormData) {
+      setFormData(initialFormData);
+    }
+  }, [initialFormData]);
+
+  // Save form data to sessionStorage whenever it changes
+  const updateFormData = (newData: Partial<PropertyFormData>) => {
+    const updatedData = { ...formData, ...newData };
+    setFormData(updatedData);
+    sessionStorage.setItem('propertyFormData', JSON.stringify(updatedData));
+  };
 
   const allSteps: FormStep[] = [
     {
@@ -104,6 +120,12 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
       component: RoomCountStep,
     },
     {
+      id: 'location',
+      title: 'Wo befindet sich die Immobilie?',
+      subtitle: 'Standort für die Lageanalyse',
+      component: LocationStep,
+    },
+    {
       id: 'year_built',
       title: 'Wann wurde die Immobilie gebaut?',
       subtitle: 'Baujahr für die Bewertung',
@@ -122,12 +144,6 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
       subtitle: 'Aufzug im Gebäude',
       component: ElevatorStep,
       isApplicable: (data) => data.propertyType === 'apartment' && data.floorLevel !== 'erdgeschoss',
-    },
-    {
-      id: 'location',
-      title: 'Wo befindet sich die Immobilie?',
-      subtitle: 'Standort für die Lageanalyse',
-      component: LocationStep,
     },
     {
       id: 'condition',
@@ -216,10 +232,6 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
     );
   }, [formData]);
 
-  const updateFormData = (newData: Partial<PropertyFormData>) => {
-    setFormData(prev => ({ ...prev, ...newData }));
-  };
-
   const canProceed = () => {
     const currentStep = applicableSteps[currentStepIndex];
     
@@ -234,14 +246,14 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
         return formData.livingArea !== null && formData.floorLevel !== null;
       case 'room_count':
         return formData.roomCount !== null;
+      case 'location':
+        return formData.zipCode !== null && formData.city !== null; // street is optional
       case 'year_built':
         return formData.yearBuilt !== null;
       case 'basement':
         return formData.hasBasement !== null;
       case 'elevator':
         return formData.hasElevator !== null;
-      case 'location':
-        return formData.zipCode !== null && formData.city !== null; // street is optional
       case 'condition':
         return formData.conditionGeneral !== null;
       case 'renovation':
