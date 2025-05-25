@@ -20,6 +20,7 @@ export interface PropertyFormData {
   // Location
   zipCode: string | null;
   city: string | null;
+  street?: string | null; // Added street property
   
   // Condition & Features
   conditionGeneral: string | null;
@@ -27,6 +28,7 @@ export interface PropertyFormData {
     [key: string]: {
       done: boolean;
       period?: string;
+      extent?: string; // Added extent property
     };
   } | null;
   equipmentQuality: string | null;

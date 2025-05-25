@@ -248,7 +248,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
       case 'elevator':
         return formData.hasElevator !== null;
       case 'location':
-        return formData.zipCode !== null && formData.city !== null;
+        return formData.zipCode !== null && formData.city !== null; // street is optional
       case 'condition':
         return formData.conditionGeneral !== null;
       case 'renovation':
