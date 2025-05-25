@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
@@ -16,16 +16,20 @@ export const ApartmentSizeStep: React.FC<ApartmentSizeStepProps> = ({
   updateFormData,
 }) => {
   const livingAreaValue = formData.livingArea || 80;
+  
+  // Local state for input field to allow intermediate values
+  const [livingAreaInput, setLivingAreaInput] = useState(livingAreaValue.toString());
 
   const handleLivingAreaChange = (value: number[]) => {
-    updateFormData({ livingArea: value[0] });
+    const newValue = value[0];
+    updateFormData({ livingArea: newValue });
+    setLivingAreaInput(newValue.toString());
   };
 
   const handleLivingAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') {
-      return; // Allow empty field while typing
-    }
+    setLivingAreaInput(value);
+    
     const numValue = parseInt(value);
     if (!isNaN(numValue) && numValue >= 25 && numValue <= 200) {
       updateFormData({ livingArea: numValue });
@@ -84,7 +88,7 @@ export const ApartmentSizeStep: React.FC<ApartmentSizeStepProps> = ({
               type="number"
               min="25"
               max="200"
-              value={livingAreaValue}
+              value={livingAreaInput}
               onChange={handleLivingAreaInputChange}
               className="text-center text-lg font-semibold"
               placeholder="m²"
@@ -96,7 +100,10 @@ export const ApartmentSizeStep: React.FC<ApartmentSizeStepProps> = ({
           {[50, 70, 90, 120].map((area) => (
             <button
               key={area}
-              onClick={() => updateFormData({ livingArea: area })}
+              onClick={() => {
+                updateFormData({ livingArea: area });
+                setLivingAreaInput(area.toString());
+              }}
               className={`p-3 rounded-lg border text-sm font-medium transition-all hover:border-primary hover:bg-primary/5 ${
                 livingAreaValue === area 
                   ? 'border-primary bg-primary/10 text-primary' 

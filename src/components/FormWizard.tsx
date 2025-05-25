@@ -13,7 +13,6 @@ import { YearBuiltStep } from './steps/YearBuiltStep';
 import { BasementStep } from './steps/BasementStep';
 import { ElevatorStep } from './steps/ElevatorStep';
 import { LocationStep } from './steps/LocationStep';
-import { CityStep } from './steps/CityStep';
 import { ConditionStep } from './steps/ConditionStep';
 import { RenovationStep } from './steps/RenovationStep';
 import { EquipmentQualityStep } from './steps/EquipmentQualityStep';
@@ -129,12 +128,6 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
       title: 'Wo befindet sich die Immobilie?',
       subtitle: 'Standort für die Lageanalyse',
       component: LocationStep,
-    },
-    {
-      id: 'city',
-      title: 'Ortsangabe',
-      subtitle: 'In welchem Ort befindet sich die Immobilie?',
-      component: CityStep,
     },
     {
       id: 'condition',

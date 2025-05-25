@@ -1,4 +1,3 @@
-
 export interface PropertyFormData {
   // Basic Info
   propertyType: 'house' | 'apartment' | null;
@@ -66,6 +65,12 @@ export interface ComparisonProperty {
   price_per_sqm_eur: number;
 }
 
+export interface PriceDevelopmentData {
+  year: string;
+  avgPrice: number;
+  localPrice: number;
+}
+
 export interface WebhookResponseData {
   estimated_property_value_eur: number | null;
   value_range_min_eur: number | null;
@@ -76,6 +81,8 @@ export interface WebhookResponseData {
   negative_value_drivers: string[] | null;
   local_market_trend_info: string | null;
   comparable_properties_nearby?: ComparisonProperty[] | null;
+  price_development_data?: PriceDevelopmentData[] | null;
+  region_name?: string | null;
 }
 
 export interface FormStep {

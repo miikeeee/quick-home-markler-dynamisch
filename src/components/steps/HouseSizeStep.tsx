@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
@@ -16,20 +16,27 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
 }) => {
   const livingAreaValue = formData.livingArea || 120;
   const plotAreaValue = formData.plotArea || 400;
+  
+  // Local state for input fields to allow intermediate values
+  const [livingAreaInput, setLivingAreaInput] = useState(livingAreaValue.toString());
+  const [plotAreaInput, setPlotAreaInput] = useState(plotAreaValue.toString());
 
   const handleLivingAreaChange = (value: number[]) => {
-    updateFormData({ livingArea: value[0] });
+    const newValue = value[0];
+    updateFormData({ livingArea: newValue });
+    setLivingAreaInput(newValue.toString());
   };
 
   const handlePlotAreaChange = (value: number[]) => {
-    updateFormData({ plotArea: value[0] });
+    const newValue = value[0];
+    updateFormData({ plotArea: newValue });
+    setPlotAreaInput(newValue.toString());
   };
 
   const handleLivingAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') {
-      return; // Allow empty field while typing
-    }
+    setLivingAreaInput(value);
+    
     const numValue = parseInt(value);
     if (!isNaN(numValue) && numValue >= 40 && numValue <= 500) {
       updateFormData({ livingArea: numValue });
@@ -38,9 +45,8 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
 
   const handlePlotAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') {
-      return; // Allow empty field while typing
-    }
+    setPlotAreaInput(value);
+    
     const numValue = parseInt(value);
     if (!isNaN(numValue) && numValue >= 100 && numValue <= 2000) {
       updateFormData({ plotArea: numValue });
@@ -89,7 +95,7 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
               type="number"
               min="40"
               max="500"
-              value={livingAreaValue}
+              value={livingAreaInput}
               onChange={handleLivingAreaInputChange}
               className="text-center text-lg font-semibold"
               placeholder="m²"
@@ -138,7 +144,7 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
               type="number"
               min="100"
               max="2000"
-              value={plotAreaValue}
+              value={plotAreaInput}
               onChange={handlePlotAreaInputChange}
               className="text-center text-lg font-semibold"
               placeholder="m²"
@@ -156,7 +162,11 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
         ].map((preset) => (
           <button
             key={`${preset.living}-${preset.plot}`}
-            onClick={() => updateFormData({ livingArea: preset.living, plotArea: preset.plot })}
+            onClick={() => {
+              updateFormData({ livingArea: preset.living, plotArea: preset.plot });
+              setLivingAreaInput(preset.living.toString());
+              setPlotAreaInput(preset.plot.toString());
+            }}
             className={`p-3 rounded-lg border text-sm font-medium transition-all hover:border-primary hover:bg-primary/5 ${
               livingAreaValue === preset.living && plotAreaValue === preset.plot
                 ? 'border-primary bg-primary/10 text-primary' 

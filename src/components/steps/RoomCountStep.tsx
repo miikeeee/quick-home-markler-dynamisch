@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
@@ -15,16 +15,20 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
   updateFormData,
 }) => {
   const roomCountValue = formData.roomCount || 3;
+  
+  // Local state for input field to allow intermediate values
+  const [roomCountInput, setRoomCountInput] = useState(roomCountValue.toString());
 
   const handleRoomCountChange = (value: number[]) => {
-    updateFormData({ roomCount: value[0] });
+    const newValue = value[0];
+    updateFormData({ roomCount: newValue });
+    setRoomCountInput(newValue.toString());
   };
 
   const handleRoomCountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (value === '') {
-      return; // Allow empty field while typing
-    }
+    setRoomCountInput(value);
+    
     const numValue = parseInt(value);
     if (!isNaN(numValue) && numValue >= 1 && numValue <= 15) {
       updateFormData({ roomCount: numValue });
@@ -79,7 +83,7 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
             type="number"
             min="1"
             max="15"
-            value={roomCountValue}
+            value={roomCountInput}
             onChange={handleRoomCountInputChange}
             className="text-center text-lg font-semibold"
           />

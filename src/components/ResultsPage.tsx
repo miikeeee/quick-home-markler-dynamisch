@@ -333,6 +333,9 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
             {/* Details Tab */}
             <TabsContent value="details" className="space-y-6">
+              {/* Preisentwicklungsdiagramm */}
+              <PriceDevelopmentChart />
+              
               <Card>
                 <CardHeader>
                   <CardTitle>Detaillierte Wertanalyse</CardTitle>

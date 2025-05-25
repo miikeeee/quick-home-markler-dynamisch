@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
@@ -14,18 +14,25 @@ export const YearBuiltStep: React.FC<YearBuiltStepProps> = ({
   formData,
   updateFormData,
 }) => {
-  // Store actual year instead of range
-  const currentYear = formData.yearBuilt ? parseInt(formData.yearBuilt) : 1990;
+  const currentYear = new Date().getFullYear();
+  const yearBuiltValue = formData.yearBuilt ? parseInt(formData.yearBuilt) : 1990;
+  
+  // Local state for input field to allow intermediate values
+  const [yearBuiltInput, setYearBuiltInput] = useState(yearBuiltValue.toString());
 
-  const handleYearChange = (value: number[]) => {
-    const year = value[0];
-    updateFormData({ yearBuilt: year.toString() });
+  const handleYearBuiltChange = (value: number[]) => {
+    const newValue = value[0];
+    updateFormData({ yearBuilt: newValue.toString() });
+    setYearBuiltInput(newValue.toString());
   };
 
-  const handleYearInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const year = parseInt(e.target.value);
-    if (!isNaN(year) && year >= 1850 && year <= 2026) {
-      updateFormData({ yearBuilt: year.toString() });
+  const handleYearBuiltInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setYearBuiltInput(value);
+    
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 1850 && numValue <= 2026) {
+      updateFormData({ yearBuilt: numValue.toString() });
     }
   };
 
@@ -39,18 +46,18 @@ export const YearBuiltStep: React.FC<YearBuiltStepProps> = ({
           className="inline-flex items-baseline gap-2 mb-4"
         >
           <span className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-success-600 bg-clip-text text-transparent">
-            {currentYear}
+            {yearBuiltValue}
           </span>
         </motion.div>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground">
           Baujahr der Immobilie
         </p>
       </div>
 
       <div className="px-4">
         <Slider
-          value={[currentYear]}
-          onValueChange={handleYearChange}
+          value={[yearBuiltValue]}
+          onValueChange={handleYearBuiltChange}
           min={1850}
           max={2026}
           step={1}
@@ -68,13 +75,32 @@ export const YearBuiltStep: React.FC<YearBuiltStepProps> = ({
             type="number"
             min="1850"
             max="2026"
-            value={currentYear}
-            onChange={handleYearInputChange}
-            className="text-center text-lg font-semibold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            value={yearBuiltInput}
+            onChange={handleYearBuiltInputChange}
+            className="text-center text-lg font-semibold"
             placeholder="Jahr"
           />
         </div>
       </div>
-    </div>
-  );
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[1970, 1990, 2000, 2010].map((year) => (
+          <button
+            key={year}
+            onClick={() => {
+              updateFormData({ yearBuilt: year.toString() });
+              setYearBuiltInput(year.toString());
+            }}
+            className={`p-3 rounded-lg border text-sm font-medium transition-all hover:border-primary hover:bg-primary/5 ${
+              yearBuiltValue === year 
+                ? 'border-primary bg-primary/10 text-primary' 
+                : 'border-border bg-background'
+            }`}
+          >
+            {year}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
 };
