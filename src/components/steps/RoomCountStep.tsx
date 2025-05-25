@@ -21,15 +21,19 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
   };
 
   const handleRoomCountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= 1 && value <= 10) {
-      updateFormData({ roomCount: value });
+    const value = e.target.value;
+    if (value === '') {
+      return; // Allow empty field while typing
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 1 && numValue <= 15) {
+      updateFormData({ roomCount: numValue });
     }
   };
 
   const getRoomLabel = (count: number) => {
     if (count === 1) return '1 Zimmer';
-    if (count >= 6) return `${count}+ Zimmer`;
+    if (count >= 10) return `${count}+ Zimmer`;
     return `${count} Zimmer`;
   };
 
@@ -59,13 +63,13 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
           value={[roomCountValue]}
           onValueChange={handleRoomCountChange}
           min={1}
-          max={10}
+          max={15}
           step={1}
           className="w-full"
         />
         <div className="flex justify-between text-sm text-muted-foreground mt-2">
           <span>1 Zimmer</span>
-          <span>10+ Zimmer</span>
+          <span>15+ Zimmer</span>
         </div>
       </div>
 
@@ -74,28 +78,12 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
           <Input
             type="number"
             min="1"
-            max="10"
+            max="15"
             value={roomCountValue}
             onChange={handleRoomCountInputChange}
             className="text-center text-lg font-semibold"
           />
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {[1, 2, 3, 4, 5, 6].map((rooms) => (
-          <button
-            key={rooms}
-            onClick={() => updateFormData({ roomCount: rooms })}
-            className={`p-3 rounded-lg border text-sm font-medium transition-all hover:border-primary hover:bg-primary/5 ${
-              roomCountValue === rooms 
-                ? 'border-primary bg-primary/10 text-primary' 
-                : 'border-border bg-background'
-            }`}
-          >
-            {getRoomLabel(rooms)}
-          </button>
-        ))}
       </div>
     </div>
   );

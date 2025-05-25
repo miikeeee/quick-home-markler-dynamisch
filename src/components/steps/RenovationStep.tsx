@@ -35,6 +35,11 @@ export const RenovationStep: React.FC<RenovationStepProps> = ({
     { value: '16_20_years', label: 'Vor 16-20 Jahren' },
   ];
 
+  const extentOptions = [
+    { value: 'teilweise', label: 'Teilweise' },
+    { value: 'umfänglich', label: 'Umfänglich' },
+  ];
+
   const handleRenovationToggle = (renovated: boolean) => {
     setHasRenovations(renovated);
     if (!renovated) {
@@ -54,7 +59,8 @@ export const RenovationStep: React.FC<RenovationStepProps> = ({
       ...currentRenovations,
       [areaId]: { 
         done, 
-        period: done ? currentRenovations[areaId]?.period : undefined 
+        period: done ? currentRenovations[areaId]?.period : undefined,
+        extent: done ? currentRenovations[areaId]?.extent : undefined
       }
     };
     updateFormData({ renovations: updatedRenovations });
@@ -67,6 +73,18 @@ export const RenovationStep: React.FC<RenovationStepProps> = ({
       [areaId]: { 
         ...currentRenovations[areaId],
         period 
+      }
+    };
+    updateFormData({ renovations: updatedRenovations });
+  };
+
+  const handleExtentChange = (areaId: string, extent: string) => {
+    const currentRenovations = formData.renovations || {};
+    const updatedRenovations = {
+      ...currentRenovations,
+      [areaId]: { 
+        ...currentRenovations[areaId],
+        extent 
       }
     };
     updateFormData({ renovations: updatedRenovations });
@@ -118,22 +136,41 @@ export const RenovationStep: React.FC<RenovationStepProps> = ({
                     </label>
                     
                     {isDone && (
-                      <div className="w-48">
-                        <Select
-                          value={renovation?.period || ''}
-                          onValueChange={(value) => handlePeriodChange(area.id, value)}
-                        >
-                          <SelectTrigger className="text-sm">
-                            <SelectValue placeholder="Zeitraum wählen" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {periodOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                      <div className="flex gap-2">
+                        <div className="w-44">
+                          <Select
+                            value={renovation?.period || ''}
+                            onValueChange={(value) => handlePeriodChange(area.id, value)}
+                          >
+                            <SelectTrigger className="text-sm">
+                              <SelectValue placeholder="Zeitraum wählen" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {periodOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="w-32">
+                          <Select
+                            value={renovation?.extent || ''}
+                            onValueChange={(value) => handleExtentChange(area.id, value)}
+                          >
+                            <SelectTrigger className="text-sm">
+                              <SelectValue placeholder="Umfang" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {extentOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                     )}
                   </div>

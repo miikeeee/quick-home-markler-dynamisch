@@ -22,9 +22,13 @@ export const ApartmentSizeStep: React.FC<ApartmentSizeStepProps> = ({
   };
 
   const handleLivingAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= 25 && value <= 200) {
-      updateFormData({ livingArea: value });
+    const value = e.target.value;
+    if (value === '') {
+      return; // Allow empty field while typing
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 25 && numValue <= 200) {
+      updateFormData({ livingArea: numValue });
     }
   };
 

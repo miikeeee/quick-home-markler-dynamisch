@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FormContainer } from './FormContainer';
@@ -128,7 +127,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
     {
       id: 'location',
       title: 'Wo befindet sich die Immobilie?',
-      subtitle: 'Postleitzahl für die Lageanalyse',
+      subtitle: 'Standort für die Lageanalyse',
       component: LocationStep,
     },
     {
@@ -249,9 +248,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete }) => {
       case 'elevator':
         return formData.hasElevator !== null;
       case 'location':
-        return formData.zipCode !== null;
-      case 'city':
-        return formData.city !== null;
+        return formData.zipCode !== null && formData.city !== null;
       case 'condition':
         return formData.conditionGeneral !== null;
       case 'renovation':

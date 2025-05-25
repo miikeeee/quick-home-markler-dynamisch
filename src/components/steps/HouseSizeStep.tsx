@@ -26,16 +26,24 @@ export const HouseSizeStep: React.FC<HouseSizeStepProps> = ({
   };
 
   const handleLivingAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= 40 && value <= 500) {
-      updateFormData({ livingArea: value });
+    const value = e.target.value;
+    if (value === '') {
+      return; // Allow empty field while typing
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 40 && numValue <= 500) {
+      updateFormData({ livingArea: numValue });
     }
   };
 
   const handlePlotAreaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    if (!isNaN(value) && value >= 100 && value <= 2000) {
-      updateFormData({ plotArea: value });
+    const value = e.target.value;
+    if (value === '') {
+      return; // Allow empty field while typing
+    }
+    const numValue = parseInt(value);
+    if (!isNaN(numValue) && numValue >= 100 && numValue <= 2000) {
+      updateFormData({ plotArea: numValue });
     }
   };
 

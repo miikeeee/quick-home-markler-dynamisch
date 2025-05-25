@@ -7,109 +7,91 @@ interface LoadingScreenProps {
   isVisible: boolean;
 }
 
-const loadingSteps = [
-  "Ihre Angaben werden verarbeitet...",
-  "Marktdaten werden analysiert...",
-  "Vergleichsobjekte werden gesucht...",
-  "Bewertung wird erstellt...",
-  "Ergebnis wird finalisiert..."
-];
-
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ isVisible }) => {
-  const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [currentMessage, setCurrentMessage] = useState(0);
+
+  const messages = [
+    "Ihre Angaben werden verarbeitet...",
+    "Marktdaten werden analysiert...",
+    "Vergleichsobjekte werden ermittelt...",
+    "Bewertung wird berechnet...",
+    "Ergebnis wird vorbereitet..."
+  ];
 
   useEffect(() => {
-    if (!isVisible) return;
-
-    const stepInterval = setInterval(() => {
-      setCurrentStep(prev => {
-        if (prev < loadingSteps.length - 1) {
-          return prev + 1;
-        }
-        return prev;
-      });
-    }, 2000);
+    if (!isVisible) {
+      setProgress(0);
+      setCurrentMessage(0);
+      return;
+    }
 
     const progressInterval = setInterval(() => {
       setProgress(prev => {
-        if (prev < 90) {
-          return prev + Math.random() * 5;
-        }
-        return prev;
+        if (prev >= 100) return 100;
+        return prev + Math.random() * 3 + 1; // Slower, more realistic progression
       });
-    }, 100);
+    }, 200);
+
+    const messageInterval = setInterval(() => {
+      setCurrentMessage(prev => (prev + 1) % messages.length);
+    }, 2000);
 
     return () => {
-      clearInterval(stepInterval);
       clearInterval(progressInterval);
+      clearInterval(messageInterval);
     };
   }, [isVisible]);
 
   if (!isVisible) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 flex items-center justify-center z-50"
-    >
-      <div className="text-center space-y-8 max-w-md mx-auto px-6">
-        {/* Animated Circle */}
-        <div className="relative">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-24 h-24 mx-auto border-4 border-primary/20 border-t-primary rounded-full"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute inset-0 w-24 h-24 mx-auto border-2 border-success-500/30 rounded-full"
-          />
-        </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-3">
-          <Progress value={progress} className="w-full h-2" />
-          <p className="text-sm text-muted-foreground">
-            {Math.round(progress)}% abgeschlossen
-          </p>
-        </div>
-
-        {/* Loading Text */}
-        <motion.div
-          key={currentStep}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="space-y-2"
-        >
-          <h2 className="text-xl font-semibold text-primary">
-            Bewertung wird erstellt
-          </h2>
-          <p className="text-muted-foreground">
-            {loadingSteps[currentStep]}
-          </p>
-        </motion.div>
-
-        {/* Animated Dots */}
-        <div className="flex justify-center space-x-1">
-          {[0, 1, 2].map((i) => (
+    <div className="fixed inset-0 bg-background/95 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="max-w-md w-full mx-auto p-8">
+        <div className="text-center space-y-8">
+          {/* Animated Logo/Icon */}
+          <div className="relative">
             <motion.div
-              key={i}
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                delay: i * 0.2
-              }}
-              className="w-2 h-2 bg-primary rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="w-16 h-16 mx-auto border-4 border-primary border-t-transparent rounded-full"
             />
-          ))}
+            <motion.div
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="absolute inset-0 w-16 h-16 mx-auto bg-gradient-to-r from-primary/20 to-success-600/20 rounded-full"
+            />
+          </div>
+
+          {/* Progress Section */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Progress value={progress} className="h-3 bg-muted" />
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>{Math.round(progress)}%</span>
+                <span>Bewertung läuft...</span>
+              </div>
+            </div>
+
+            {/* Dynamic Message */}
+            <motion.div
+              key={currentMessage}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.5 }}
+              className="text-lg font-medium text-foreground min-h-[28px]"
+            >
+              {messages[currentMessage]}
+            </motion.div>
+          </div>
+
+          {/* Additional Info */}
+          <div className="text-sm text-muted-foreground">
+            <p>Dies kann einen Moment dauern...</p>
+          </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };

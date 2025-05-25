@@ -13,6 +13,8 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   updateFormData,
 }) => {
   const [zipCode, setZipCode] = useState(formData.zipCode || '');
+  const [city, setCity] = useState(formData.city || '');
+  const [street, setStreet] = useState(formData.street || '');
 
   const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 5);
@@ -20,26 +22,73 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     updateFormData({ zipCode: value.length === 5 ? value : null });
   };
 
+  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCity(value);
+    updateFormData({ city: value.trim().length > 0 ? value.trim() : null });
+  };
+
+  const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setStreet(value);
+    updateFormData({ street: value.trim().length > 0 ? value.trim() : null });
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="text-center">
-        <Input
-          type="text"
-          placeholder="12345"
-          value={zipCode}
-          onChange={handleZipCodeChange}
-          className="text-center text-2xl h-16 max-w-xs mx-auto"
-          maxLength={5}
-        />
-        <p className="text-muted-foreground mt-4">
-          Geben Sie die 5-stellige Postleitzahl ein
-        </p>
+        <h3 className="text-xl font-semibold mb-6">Standort der Immobilie</h3>
+        
+        <div className="space-y-6 max-w-md mx-auto">
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
+              Postleitzahl *
+            </label>
+            <Input
+              type="text"
+              placeholder="12345"
+              value={zipCode}
+              onChange={handleZipCodeChange}
+              className="text-center text-xl h-14"
+              maxLength={5}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
+              Stadt/Ort *
+            </label>
+            <Input
+              type="text"
+              placeholder="z.B. München"
+              value={city}
+              onChange={handleCityChange}
+              className="text-center text-xl h-14"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
+              Straße (optional)
+            </label>
+            <Input
+              type="text"
+              placeholder="z.B. Musterstraße 123"
+              value={street}
+              onChange={handleStreetChange}
+              className="text-center text-lg h-12"
+            />
+            <p className="text-xs text-muted-foreground mt-2">
+              Die Angabe der Straße macht die Bewertung genauer
+            </p>
+          </div>
+        </div>
       </div>
 
-      {zipCode.length === 5 && (
+      {zipCode.length === 5 && city.length > 0 && (
         <div className="text-center">
           <p className="text-success-600 font-medium">
-            ✓ Postleitzahl gültig
+            ✓ Standortangaben vollständig
           </p>
         </div>
       )}
