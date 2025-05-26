@@ -62,9 +62,10 @@ const initialFormData: PropertyFormData = {
 interface FormWizardProps {
   onComplete: (data: WebhookResponseData, formData?: PropertyFormData) => void;
   initialFormData?: PropertyFormData;
+  maklerName?: string;
 }
 
-export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormData: propInitialFormData }) => {
+export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormData: propInitialFormData, maklerName }) => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [formData, setFormData] = useState<PropertyFormData>(propInitialFormData || initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -394,6 +395,7 @@ export const FormWizard: React.FC<FormWizardProps> = ({ onComplete, initialFormD
       totalSteps={applicableSteps.length}
       title={currentStep.title}
       subtitle={currentStep.subtitle}
+      maklerName={maklerName}
     >
       <AnimatePresence mode="wait">
         <motion.div
