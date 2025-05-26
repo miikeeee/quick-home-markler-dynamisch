@@ -448,16 +448,23 @@ const waLink = maklerTel
               <div className="mb-2 text-muted-foreground">
                 {maklerName && (
                   <span>
-                    Sie suchen nach Wegen, Ihr Makler-Business zu digitalisieren und Kunden einen echten Wow-Effekt zu bieten?  
+                    Sie suchen nach Wegen, Ihr Business zu digitalisieren und Kunden einen echten Wow-Effekt zu bieten?  
                   </span>
                 )}
                 <br />
-                <span>
-                  Ich bin <span className="font-semibold text-primary">{'Mike Mildenberger'}</span> – kein anonymes Unternehmen, sondern jemand, der <b>selbst Immobilien besitzt und digitale Lösungen lebt</b>.<br />
-                  Lust, in <span className="font-semibold">20 Minuten</span> zu sehen, wie Sie mit wenigen Klicks mehr Anfragen generieren? 
-                  <br />Melden Sie sich direkt bei mir – per WhatsApp, Telefon oder ganz entspannt über meinen Kalender. 
-                  <br /><span className="italic text-sm text-gray-500">Ohne Risiko – einfach mal kennenlernen!</span>
-                </span>
+               <span>
+  Ich bin <span className="font-semibold text-primary">{maklerName || 'Mike Mildenberger'}</span> – kein anonymer Anbieter, sondern jemand, der selbst Immobilien besitzt und seit Jahren mit digitalen Lösungen arbeitet.
+  <br /><br />
+  Sie möchten sich von klassischen Formularen à la "Jetzt Anfrage senden" abheben? Genau das machen wir hier: Sie erhalten echten Mehrwert schon **vor** der Kontaktaufnahme – und nicht erst nach dem Absenden Ihrer Daten.
+  <br /><br />
+  Ob smarte Klickstrecken wie diese, automatisierte Prozesse oder individuelle Digitalisierungen – ich unterstütze Sie gerne dabei, Ihre Abläufe zu modernisieren und nachhaltig Zeit und Geld zu sparen. 
+  <br /><br />
+  Melden Sie sich einfach direkt – per WhatsApp, Telefon oder ganz entspannt über meinen Kalender.<br />
+  <span className="italic text-sm text-gray-500">
+    Ohne Verpflichtung – einfach mal kennenlernen und neue Möglichkeiten entdecken.
+  </span>
+</span>
+
               </div>
               <div className="flex flex-col gap-2 mt-3">
                 {maklerTel && (
