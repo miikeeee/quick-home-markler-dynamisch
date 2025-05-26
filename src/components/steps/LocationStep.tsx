@@ -47,7 +47,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder="12345"
+              placeholder={config?.officeZip ||"12345"}
               value={zipCode}
               onChange={handleZipCodeChange}
               className="text-center text-xl h-14"
@@ -61,7 +61,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder="z.B. München"
+              placeholder={config?.officeCity || "z.B. München"}
               value={city}
               onChange={handleCityChange}
               className="text-center text-xl h-14"
@@ -74,7 +74,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder="z.B. Musterstraße 123"
+              placeholder={config?.officeStreet || "z.B. Musterstraße 123"}
               value={street}
               onChange={handleStreetChange}
               className="text-center text-lg h-12"
