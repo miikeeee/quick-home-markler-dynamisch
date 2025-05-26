@@ -215,7 +215,8 @@ const waLink = maklerTel
 
   return (
   
-
+<div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
 
         {/* Header */}
         <motion.div
@@ -436,8 +437,7 @@ const waLink = maklerTel
                 </CardContent>
               </Card>
 
-<div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+
 
       {/* Makler-Block – hier einsetzen */}
       {(maklerTel || maklerEmail) && (
