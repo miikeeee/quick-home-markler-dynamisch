@@ -5,7 +5,7 @@ export type ConfigType = {
   leadEmail: string;
   telefon?: string;
   adresse?: string;
-  bueroStrasse?: string;
-  bueroPLZ?: string;
-  bueroStadt?: string;
+  officeStreet?: string;
+  officeZip?: string;
+  officeCity?: string;
 };
