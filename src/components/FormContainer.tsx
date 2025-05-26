@@ -30,7 +30,7 @@ export const FormContainer: React.FC<FormContainerProps> = ({
             className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-success-600 bg-clip-text text-transparent mb-2"
           >
             Immobilien-Bewertungstool
-            {maklerName ? ` für ${maklerName}` : ""}
+            {maklerName ? ` von ${maklerName}` : ""}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: -10 }}
