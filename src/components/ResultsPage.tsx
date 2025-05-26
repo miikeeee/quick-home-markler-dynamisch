@@ -455,10 +455,10 @@ const waLink = maklerTel
                 )}
                 <br />
                 <span>
-                  Ich bin <span className="font-semibold text-primary">{maklerName || 'Mike Mildenberger'}</span> – kein anonymes Unternehmen, sondern jemand, der <b>selbst Immobilien liebt und digitale Lösungen lebt</b>.<br />
-                  Lust, in <span className="font-semibold">30 Minuten</span> zu sehen, wie Sie mit wenigen Klicks mehr Anfragen generieren? 
+                  Ich bin <span className="font-semibold text-primary">{'Mike Mildenberger'}</span> – kein anonymes Unternehmen, sondern jemand, der <b>selbst Immobilien besitzt und digitale Lösungen lebt</b>.<br />
+                  Lust, in <span className="font-semibold">20 Minuten</span> zu sehen, wie Sie mit wenigen Klicks mehr Anfragen generieren? 
                   <br />Melden Sie sich direkt bei mir – per WhatsApp, Telefon oder ganz entspannt über meinen Kalender. 
-                  <br /><span className="italic text-sm text-gray-500">PS: Ich helfe Maklern regelmäßig, mit einem smarten Tool den Unterschied zu machen. Ohne Risiko – einfach mal kennenlernen!</span>
+                  <br /><span className="italic text-sm text-gray-500">Ohne Risiko – einfach mal kennenlernen!</span>
                 </span>
               </div>
               <div className="flex flex-col gap-2 mt-3">
