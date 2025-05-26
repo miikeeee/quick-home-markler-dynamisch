@@ -31,10 +31,6 @@ const App = () => {
     }
   }, []);
 
-  if (loading) {
-    return <div>Lädt Konfiguration...</div>;
-  }
-
   if (!config) {
     return (
       <div>
