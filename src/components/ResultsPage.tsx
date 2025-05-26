@@ -221,30 +221,11 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
           {maklerName ? `Ihr Ansprechpartner: ${maklerName}` : null}
           {maklerAdresse ? <div>{maklerAdresse}</div> : null}
         </div>
-        <div>
-          {maklerTel && (
-            <span className="block text-base font-medium mb-1">
-              📞 <a href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
-            </span>
-          )}
-          {maklerEmail && (
-            <span className="block text-base font-medium">
-              📧 <a href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
-            </span>
-          )}
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-4">
-  <Button className="h-12 px-8 text-lg shadow-lg" asChild>
-    <a href={`tel:${maklerTel?.replace(/\s+/g, '')}`}>Lassen Sie uns kurz sprechen</a>
-  </Button>
-  <PopupButton
-    url="https://calendly.com/mike-nocodestud/strategie-call"
-    rootElement={document.getElementById("root")!}
-    text="Termin online buchen"
-    className="h-12 px-8 text-lg shadow-lg bg-primary text-white"
-  />
-</div>
+        <Button className="h-12 px-8 text-lg shadow-lg" asChild>
+        <a href={tel:${maklerTel?.replace(/\s+/g, '')}}>
+          Jetzt anrufen &amp; beraten lassen
+        </a>
+      </Button>
 
     </CardContent>
   </Card>
