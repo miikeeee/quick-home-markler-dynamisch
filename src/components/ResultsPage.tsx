@@ -453,7 +453,7 @@ const waLink = maklerTel
                 )}
                 <br />
                <span>
-  Ich bin <span className="font-semibold text-primary">{maklerName || 'Mike Mildenberger'}</span> – kein anonymer Anbieter, sondern jemand, der selbst Immobilien besitzt und seit Jahren mit digitalen Lösungen arbeitet.
+  Ich bin <span className="font-semibold text-primary">Mike Mildenberger</span> – kein anonymer Anbieter, sondern jemand, der selbst Immobilien besitzt und seit Jahren mit digitalen Lösungen arbeitet.
   <br /><br />
   Sie möchten sich von klassischen Formularen à la "Jetzt Anfrage senden" abheben? Genau das machen wir hier: Sie erhalten echten Mehrwert schon **vor** der Kontaktaufnahme – und nicht erst nach dem Absenden Ihrer Daten.
   <br /><br />
