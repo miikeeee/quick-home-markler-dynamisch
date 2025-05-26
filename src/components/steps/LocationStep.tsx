@@ -1,4 +1,4 @@
-
+import { config } from "@/config";
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { PropertyFormData } from '@/types/propertyTypes';
