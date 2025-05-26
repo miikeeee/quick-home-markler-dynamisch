@@ -208,41 +208,38 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
   return (
     
-<div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        {/* Makler-Closing-Block */}
-{(maklerTel || maklerEmail) && (
-  <Card className="mb-8 border-primary/40">
-    <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
-      <div>
-        <div className="font-bold text-xl text-primary mb-1">
-          Sie wünschen eine persönliche Beratung?
-        </div>
-        <div className="text-muted-foreground mb-2">
-          {maklerName ? `Ihr Ansprechpartner: ${maklerName}` : null}
-          {maklerAdresse ? <div>{maklerAdresse}</div> : null}
-        </div>
-        <div>
-          {maklerTel && (
-            <span className="block text-base font-medium mb-1">
-              📞 <a href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
-            </span>
-          )}
-          {maklerEmail && (
-            <span className="block text-base font-medium">
-              📧 <a href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
-            </span>
-          )}
-        </div>
-      </div>
+<Card className="mb-8 p-6 bg-blue-50/60 border-2 border-primary/10 shadow-lg rounded-2xl">
+  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h2 className="text-xl font-bold text-primary mb-1">Neugierig, wie das bei Ihnen aussehen könnte?</h2>
+      <p className="text-muted-foreground mb-2">
+        Hi, ich bin <b>Mike</b> – Immobilienfan, Digitalisierer und Entwickler aus Leidenschaft.<br />
+        Wenn Sie Lust haben, Ihre Ideen oder Herausforderungen zu besprechen, melden Sie sich direkt bei mir – persönlich, unkompliziert, ehrlich.<br />
+        <span className="flex items-center gap-2 mt-2 text-primary"><PhoneIcon/> <b>+49 170 1234567</b></span>
+        <span className="flex items-center gap-2 text-primary"><MailIcon/> mike@neco24.de</span>
+        <span className="flex items-center gap-2 text-green-600"><WhatsAppIcon/> <a href="https://wa.me/491701234567" target="_blank">Per WhatsApp schreiben</a></span>
+      </p>
+      <p className="text-muted-foreground text-sm">
+        Oder sichern Sie sich direkt einen Termin für ein persönliches Gespräch:
+      </p>
+    </div>
+    <div className="flex flex-col md:flex-row gap-3">
       <Button className="h-12 px-8 text-lg shadow-lg" asChild>
-        <a href={`tel:${maklerTel?.replace(/\s+/g, '')}`}>
-          Jetzt anrufen &amp; beraten lassen
-        </a>
+        <a href={`tel:+491701234567`}><PhoneIcon className="mr-2" /> Direkt anrufen</a>
       </Button>
-    </CardContent>
-  </Card>
-)}
+      <Button className="h-12 px-8 text-lg shadow-lg bg-green-500 hover:bg-green-600 text-white" asChild>
+        <a href="https://wa.me/491701234567" target="_blank"><WhatsAppIcon className="mr-2" /> WhatsApp</a>
+      </Button>
+      <PopupButton
+        url="https://calendly.com/mike-nocodestud/strategie-call"
+        rootElement={document.getElementById("root")!}
+        text="Termin online buchen"
+        className="h-12 px-8 text-lg shadow-lg bg-primary text-white"
+      />
+    </div>
+  </div>
+</Card>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
