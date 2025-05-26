@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ConfigType } from "@/types/ConfigType";
 import { 
   ArrowLeft, 
   Download, 
@@ -35,14 +36,20 @@ interface ResultsPageProps {
   onBack: () => void;
   onEdit: () => void;
   originalFormData?: PropertyFormData;
+  config: ConfigType;
 }
 
 export const ResultsPage: React.FC<ResultsPageProps> = ({ 
   data, 
   onBack, 
   onEdit, 
-  originalFormData 
+  originalFormData,
+  config
 }) => {
+  const maklerTel = config?.telefon || null;
+  const maklerAdresse = config?.adresse || null;
+  const maklerEmail = config?.leadEmail || null;
+  const maklerName = config?.maklerName || null;
   const [activeTab, setActiveTab] = useState('overview');
   const [comparisonDialogOpen, setComparisonDialogOpen] = useState(false);
   const [addComparisonDialogOpen, setAddComparisonDialogOpen] = useState(false);
@@ -202,6 +209,40 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
+        {/* Makler-Closing-Block */}
+{(maklerTel || maklerEmail) && (
+  <Card className="mb-8 border-primary/40">
+    <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
+      <div>
+        <div className="font-bold text-xl text-primary mb-1">
+          Sie wünschen eine persönliche Beratung?
+        </div>
+        <div className="text-muted-foreground mb-2">
+          {maklerName ? `Ihr Ansprechpartner: ${maklerName}` : null}
+          {maklerAdresse ? <div>{maklerAdresse}</div> : null}
+        </div>
+        <div>
+          {maklerTel && (
+            <span className="block text-base font-medium mb-1">
+              📞 <a href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
+            </span>
+          )}
+          {maklerEmail && (
+            <span className="block text-base font-medium">
+              📧 <a href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
+            </span>
+          )}
+        </div>
+      </div>
+      <Button className="h-12 px-8 text-lg shadow-lg" asChild>
+        <a href={`tel:${maklerTel?.replace(/\s+/g, '')}`}>
+          Jetzt anrufen &amp; beraten lassen
+        </a>
+      </Button>
+    </CardContent>
+  </Card>
+)}
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
