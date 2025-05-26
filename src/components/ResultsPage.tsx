@@ -208,37 +208,87 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
   return (
     
-<Card className="mb-8 p-6 bg-blue-50/60 border-2 border-primary/10 shadow-lg rounded-2xl">
-  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-    <div>
-      <h2 className="text-xl font-bold text-primary mb-1">Neugierig, wie das bei Ihnen aussehen könnte?</h2>
-      <p className="text-muted-foreground mb-2">
-        Hi, ich bin <b>Mike</b> – Immobilienfan, Digitalisierer und Entwickler aus Leidenschaft.<br />
-        Wenn Sie Lust haben, Ihre Ideen oder Herausforderungen zu besprechen, melden Sie sich direkt bei mir – persönlich, unkompliziert, ehrlich.<br />
-        <span className="flex items-center gap-2 mt-2 text-primary"><PhoneIcon/> <b>+49 170 1234567</b></span>
-        <span className="flex items-center gap-2 text-primary"><MailIcon/> mike@neco24.de</span>
-        <span className="flex items-center gap-2 text-green-600"><WhatsAppIcon/> <a href="https://wa.me/491701234567" target="_blank">Per WhatsApp schreiben</a></span>
-      </p>
-      <p className="text-muted-foreground text-sm">
-        Oder sichern Sie sich direkt einen Termin für ein persönliches Gespräch:
-      </p>
-    </div>
-    <div className="flex flex-col md:flex-row gap-3">
-      <Button className="h-12 px-8 text-lg shadow-lg" asChild>
-        <a href={`tel:+491701234567`}><PhoneIcon className="mr-2" /> Direkt anrufen</a>
-      </Button>
-      <Button className="h-12 px-8 text-lg shadow-lg bg-green-500 hover:bg-green-600 text-white" asChild>
-        <a href="https://wa.me/491701234567" target="_blank"><WhatsAppIcon className="mr-2" /> WhatsApp</a>
-      </Button>
-      <PopupButton
-        url="https://calendly.com/mike-nocodestud/strategie-call"
-        rootElement={document.getElementById("root")!}
-        text="Termin online buchen"
-        className="h-12 px-8 text-lg shadow-lg bg-primary text-white"
-      />
-    </div>
-  </div>
-</Card>
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+
+// Optional: WhatsApp-Link vorbereiten
+const waLink = maklerTel
+  ? `https://wa.me/${maklerTel.replace(/\D/g, '')}?text=Hallo%20${encodeURIComponent(
+      maklerName || 'Mike'
+    )}%2C%20ich%20interessiere%20mich%20für%20Ihre%20digitale%20Immobilien-Lösung.`
+  : '#';
+
+{/* Makler-Personal-Closing-Block */}
+{(maklerTel || maklerEmail) && (
+  <Card className="mb-8 border-primary/40 shadow-lg">
+    <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
+      <div>
+        <div className="font-bold text-xl text-primary mb-1">
+          Noch eine Sache, bevor Sie gehen…
+        </div>
+        <div className="mb-2 text-muted-foreground">
+          {maklerName && (
+            <span>
+              Sie suchen nach Wegen, Ihr Makler-Business zu digitalisieren und Kunden einen echten Wow-Effekt zu bieten?  
+            </span>
+          )}
+          <br />
+          <span>
+            Ich bin <span className="font-semibold text-primary">{maklerName || 'Mike Mildenberger'}</span> – kein anonymes Unternehmen, sondern jemand, der **selbst Immobilien liebt und digitale Lösungen lebt**.<br />
+            Lust, in <span className="font-semibold">30 Minuten</span> zu sehen, wie Sie mit wenigen Klicks mehr Anfragen generieren? 
+            <br />Melden Sie sich direkt bei mir – per WhatsApp, Telefon oder ganz entspannt über meinen Kalender. 
+            <br /><span className="italic text-sm text-gray-500">PS: Ich helfe Maklern regelmäßig, mit einem smarten Tool den Unterschied zu machen. Ohne Risiko – einfach mal kennenlernen!</span>
+          </span>
+        </div>
+        <div className="flex flex-col gap-2 mt-3">
+          {maklerTel && (
+            <span className="block text-base font-medium mb-1">
+              📞 <a className="underline" href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
+            </span>
+          )}
+          {maklerEmail && (
+            <span className="block text-base font-medium">
+              📧 <a className="underline" href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
+            </span>
+          )}
+          {/* WhatsApp direkt */}
+          {maklerTel && (
+            <a
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-600 hover:text-green-800 text-sm underline"
+            >
+              Oder schreib mir direkt per WhatsApp
+            </a>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 items-end">
+        {/* Telefon Button */}
+        <Button className="h-12 px-8 text-lg shadow-lg mb-2" asChild>
+          <a href={`tel:${maklerTel?.replace(/\s+/g, '')}`}>
+            Jetzt anrufen &amp; beraten lassen
+          </a>
+        </Button>
+        {/* Calendly Button */}
+        <Button
+          className="h-12 px-8 text-lg shadow-lg bg-gradient-to-r from-primary to-success-600 text-white"
+          asChild
+        >
+          <a
+            href="https://calendly.com/mike-nocodestud/strategie-call"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Termin im Kalender buchen
+          </a>
+        </Button>
+      </div>
+    </CardContent>
+  </Card>
+)}
+
 
         {/* Header */}
         <motion.div
