@@ -1,6 +1,6 @@
 {
-  "logo": "/logos/hansmakler.png",
   "farbe": "#123456",
-  "anrede": "Hallo Herr Makler!",
+  "anrede": "Willkommen bei Hans Makler",
+  "maklerName": "Hans Makler Immobilien",
   "leadEmail": "info@hansmakler.de"
 }
