@@ -2,32 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { FormWizard } from '@/components/FormWizard';
 import { ResultsPage } from '@/components/ResultsPage';
 import { WebhookResponseData, PropertyFormData } from '@/types/propertyTypes';
+import { ConfigType } from '@/types/ConfigType';
 
-const Index = () => {
+type IndexProps = {
+  config: ConfigType;
+};
+
+const Index: React.FC<IndexProps> = ({ config }) => {
   const [currentView, setCurrentView] = useState<'form' | 'results'>('form');
   const [resultsData, setResultsData] = useState<WebhookResponseData | null>(null);
   const [originalFormData, setOriginalFormData] = useState<PropertyFormData | null>(null);
 
-  // Load form data from sessionStorage on component mount
   useEffect(() => {
     const savedFormData = sessionStorage.getItem('propertyFormData');
     const savedResultsData = sessionStorage.getItem('propertyResultsData');
-    
     if (savedFormData) {
-      try {
-        setOriginalFormData(JSON.parse(savedFormData));
-      } catch (error) {
-        console.error('Error parsing saved form data:', error);
-      }
+      try { setOriginalFormData(JSON.parse(savedFormData)); } catch {}
     }
-    
     if (savedResultsData) {
       try {
         setResultsData(JSON.parse(savedResultsData));
         setCurrentView('results');
-      } catch (error) {
-        console.error('Error parsing saved results data:', error);
-      }
+      } catch {}
     }
   }, []);
 
@@ -35,22 +31,18 @@ const Index = () => {
     setResultsData(data);
     if (formData) {
       setOriginalFormData(formData);
-      // Save to sessionStorage for persistence
       sessionStorage.setItem('propertyFormData', JSON.stringify(formData));
     }
-    // Save results to sessionStorage
     sessionStorage.setItem('propertyResultsData', JSON.stringify(data));
     setCurrentView('results');
   };
 
   const handleBackToForm = () => {
-    // Clear results from sessionStorage but keep form data
     sessionStorage.removeItem('propertyResultsData');
     setCurrentView('form');
   };
 
   const handleEditForm = () => {
-    // Clear results from sessionStorage but keep form data
     sessionStorage.removeItem('propertyResultsData');
     setCurrentView('form');
   };
@@ -70,6 +62,7 @@ const Index = () => {
     <FormWizard 
       onComplete={handleFormComplete}
       initialFormData={originalFormData || undefined}
+      maklerName={config.maklerName} // <--- Wichtig!
     />
   );
 };
