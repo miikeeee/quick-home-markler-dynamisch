@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ProgressIndicator } from './ProgressIndicator';
+import { ConfigType } from '../types/ConfigType'; // Pfad ggf. anpassen
 
 interface FormContainerProps {
   children: React.ReactNode;
@@ -9,6 +9,7 @@ interface FormContainerProps {
   totalSteps: number;
   title: string;
   subtitle?: string;
+  config: ConfigType;
 }
 
 export const FormContainer: React.FC<FormContainerProps> = ({
@@ -17,9 +18,13 @@ export const FormContainer: React.FC<FormContainerProps> = ({
   totalSteps,
   title,
   subtitle,
+  config,
 }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div
+      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50"
+      style={{ background: config.farbe }} // Setze die Makler-Farbe als Hintergrund
+    >
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -30,6 +35,28 @@ export const FormContainer: React.FC<FormContainerProps> = ({
           >
             Immobilien-Bewertungstool
           </motion.h1>
+
+          {/* Makler-Anrede */}
+          {config.anrede && (
+            <div className="text-lg font-semibold mb-1 text-primary">
+              {config.anrede}
+            </div>
+          )}
+
+          {/* Makler-Name */}
+          {config.maklerName && (
+            <div className="text-base font-medium mb-1 text-gray-800">
+              {config.maklerName}
+            </div>
+          )}
+
+          {/* Makler-E-Mail */}
+          {config.leadEmail && (
+            <div className="text-sm text-gray-600 mb-2">
+              Kontakt: <a href={`mailto:${config.leadEmail}`}>{config.leadEmail}</a>
+            </div>
+          )}
+
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -42,10 +69,7 @@ export const FormContainer: React.FC<FormContainerProps> = ({
 
         {/* Progress */}
         <div className="max-w-md mx-auto mb-8">
-          <ProgressIndicator
-            currentStep={currentStep}
-            totalSteps={totalSteps}
-          />
+          <ProgressIndicator currentStep={currentStep} totalSteps={totalSteps} />
         </div>
 
         {/* Form Card */}
@@ -69,10 +93,7 @@ export const FormContainer: React.FC<FormContainerProps> = ({
                   {subtitle}
                 </p>
               )}
-              
-              <div className="animate-fade-in-up">
-                {children}
-              </div>
+              <div className="animate-fade-in-up">{children}</div>
             </motion.div>
           </div>
         </motion.div>
