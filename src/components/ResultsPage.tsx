@@ -215,79 +215,6 @@ const waLink = maklerTel
 
   return (
   
-<div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-
-      {/* Makler-Block – hier einsetzen */}
-      {(maklerTel || maklerEmail) && (
-        <Card className="mb-8 border-primary/40 shadow-lg">
-          <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
-            <div>
-              <div className="font-bold text-xl text-primary mb-1">
-                Noch eine Sache, bevor Sie gehen…
-              </div>
-              <div className="mb-2 text-muted-foreground">
-                {maklerName && (
-                  <span>
-                    Sie suchen nach Wegen, Ihr Makler-Business zu digitalisieren und Kunden einen echten Wow-Effekt zu bieten?  
-                  </span>
-                )}
-                <br />
-                <span>
-                  Ich bin <span className="font-semibold text-primary">{maklerName || 'Mike Mildenberger'}</span> – kein anonymes Unternehmen, sondern jemand, der <b>selbst Immobilien liebt und digitale Lösungen lebt</b>.<br />
-                  Lust, in <span className="font-semibold">30 Minuten</span> zu sehen, wie Sie mit wenigen Klicks mehr Anfragen generieren? 
-                  <br />Melden Sie sich direkt bei mir – per WhatsApp, Telefon oder ganz entspannt über meinen Kalender. 
-                  <br /><span className="italic text-sm text-gray-500">PS: Ich helfe Maklern regelmäßig, mit einem smarten Tool den Unterschied zu machen. Ohne Risiko – einfach mal kennenlernen!</span>
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 mt-3">
-                {maklerTel && (
-                  <span className="block text-base font-medium mb-1">
-                    📞 <a className="underline" href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
-                  </span>
-                )}
-                {maklerEmail && (
-                  <span className="block text-base font-medium">
-                    📧 <a className="underline" href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
-                  </span>
-                )}
-                {/* WhatsApp direkt */}
-                {maklerTel && (
-                  <a
-                    href={waLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-green-600 hover:text-green-800 text-sm underline"
-                  >
-                    Oder schreib mir direkt per WhatsApp
-                  </a>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 items-end">
-              {/* Telefon Button */}
-              <Button className="h-12 px-8 text-lg shadow-lg mb-2" asChild>
-                <a href={`tel:${maklerTel?.replace(/\s+/g, '')}`}>
-                  Jetzt anrufen &amp; beraten lassen
-                </a>
-              </Button>
-              {/* Calendly Button */}
-              <Button
-                className="h-12 px-8 text-lg shadow-lg bg-gradient-to-r from-primary to-success-600 text-white"
-                asChild
-              >
-                <a
-                  href="https://calendly.com/mike-nocodestud/strategie-call"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Termin im Kalender buchen
-                </a>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
 
         {/* Header */}
@@ -509,6 +436,77 @@ const waLink = maklerTel
                 </CardContent>
               </Card>
 
+<div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50">
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
+
+      {/* Makler-Block – hier einsetzen */}
+      {(maklerTel || maklerEmail) && (
+        <Card className="mb-8 border-primary/40 shadow-lg">
+          <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
+            <div>
+              <div className="font-bold text-xl text-primary mb-1">
+                Noch eine Sache, bevor Sie gehen…
+              </div>
+              <div className="mb-2 text-muted-foreground">
+                {maklerName && (
+                  <span>
+                    Sie suchen nach Wegen, Ihr Makler-Business zu digitalisieren und Kunden einen echten Wow-Effekt zu bieten?  
+                  </span>
+                )}
+                <br />
+                <span>
+                  Ich bin <span className="font-semibold text-primary">{maklerName || 'Mike Mildenberger'}</span> – kein anonymes Unternehmen, sondern jemand, der <b>selbst Immobilien liebt und digitale Lösungen lebt</b>.<br />
+                  Lust, in <span className="font-semibold">30 Minuten</span> zu sehen, wie Sie mit wenigen Klicks mehr Anfragen generieren? 
+                  <br />Melden Sie sich direkt bei mir – per WhatsApp, Telefon oder ganz entspannt über meinen Kalender. 
+                  <br /><span className="italic text-sm text-gray-500">PS: Ich helfe Maklern regelmäßig, mit einem smarten Tool den Unterschied zu machen. Ohne Risiko – einfach mal kennenlernen!</span>
+                </span>
+              </div>
+              <div className="flex flex-col gap-2 mt-3">
+                {maklerTel && (
+                  <span className="block text-base font-medium mb-1">
+                    📞 <a className="underline" href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
+                  </span>
+                )}
+                {maklerEmail && (
+                  <span className="block text-base font-medium">
+                    📧 <a className="underline" href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
+                  </span>
+                )}
+                {/* WhatsApp direkt */}
+                {maklerTel && (
+                  <a
+                    href={waLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-600 hover:text-green-800 text-sm underline"
+                  >
+                    Oder schreib mir direkt per WhatsApp
+                  </a>
+                )}
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 items-end">
+              
+              {/* Calendly Button */}
+              <Button
+                className="h-12 px-8 text-lg shadow-lg bg-gradient-to-r from-primary to-success-600 text-white"
+                asChild
+              >
+                <a
+                  href="https://calendly.com/mike-nocodestud/strategie-call"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  kurzen Termin buchen
+                </a>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+
+              
             </TabsContent>
 
             {/* Details Tab - Enhanced with Price Development Chart */}
