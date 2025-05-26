@@ -3,4 +3,6 @@ export type ConfigType = {
   farbe: string;
   anrede: string;
   leadEmail: string;
+  telefon?: string;
+  adresse?: string;
 };
