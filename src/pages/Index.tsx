@@ -54,6 +54,7 @@ const Index: React.FC<IndexProps> = ({ config }) => {
         onBack={handleBackToForm}
         onEdit={handleEditForm}
         originalFormData={originalFormData || undefined}
+        config={config}
       />
     );
   }
