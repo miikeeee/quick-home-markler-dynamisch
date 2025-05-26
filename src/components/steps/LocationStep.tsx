@@ -11,10 +11,11 @@ interface LocationStepProps {
 export const LocationStep: React.FC<LocationStepProps> = ({
   formData,
   updateFormData,
+  config
 }) => {
-  const [zipCode, setZipCode] = useState(formData.zipCode || '');
-  const [city, setCity] = useState(formData.city || '');
-  const [street, setStreet] = useState(formData.street || '');
+  const [zipCode, setZipCode] = useState(formData.zipCode || config?.officeZip || '');
+  const [city, setCity] = useState(formData.city|| config?.officeCity || '');
+  const [street, setStreet] = useState(formData.street || config?.officeStreet || '');
 
   const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 5);
