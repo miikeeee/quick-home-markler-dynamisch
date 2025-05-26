@@ -29,12 +29,12 @@ export const FormContainer: React.FC<FormContainerProps> = ({
         {/* Header */}
         <div className="text-center mb-8">
           <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-success-600 bg-clip-text text-transparent mb-2"
-          >
-            Immobilien-Bewertungstool
-          </motion.h1>
+  initial={{ opacity: 0, y: -20 }}
+  animate={{ opacity: 1, y: 0 }}
+  className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-success-600 bg-clip-text text-transparent mb-2"
+>
+  Immobilien-Bewertungstool für {config.maklerName}
+</motion.h1>
 
           {/* Makler-Anrede */}
           {config.anrede && (
