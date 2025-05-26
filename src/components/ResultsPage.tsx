@@ -215,18 +215,30 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
     <CardContent className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6">
       <div>
         <div className="font-bold text-xl text-primary mb-1">
-         Gefällt Ihnen dieser Rechner?
+          Sie wünschen eine persönliche Beratung?
         </div>
         <div className="text-muted-foreground mb-2">
           {maklerName ? `Ihr Ansprechpartner: ${maklerName}` : null}
           {maklerAdresse ? <div>{maklerAdresse}</div> : null}
         </div>
-        <Button className="h-12 px-8 text-lg shadow-lg" asChild>
-        <a href={tel:${maklerTel?.replace(/\s+/g, '')}}>
+        <div>
+          {maklerTel && (
+            <span className="block text-base font-medium mb-1">
+              📞 <a href={`tel:${maklerTel.replace(/\s+/g, '')}`}>{maklerTel}</a>
+            </span>
+          )}
+          {maklerEmail && (
+            <span className="block text-base font-medium">
+              📧 <a href={`mailto:${maklerEmail}`}>{maklerEmail}</a>
+            </span>
+          )}
+        </div>
+      </div>
+      <Button className="h-12 px-8 text-lg shadow-lg" asChild>
+        <a href={`tel:${maklerTel?.replace(/\s+/g, '')}`}>
           Jetzt anrufen &amp; beraten lassen
         </a>
       </Button>
-
     </CardContent>
   </Card>
 )}
