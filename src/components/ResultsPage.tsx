@@ -455,7 +455,7 @@ const waLink = maklerTel
                <span>
   Ich bin <span className="font-semibold text-primary">Mike Mildenberger</span> – kein anonymer Anbieter, sondern jemand, der selbst Immobilien besitzt und seit Jahren mit digitalen Lösungen arbeitet.
   <br /><br />
-  Sie möchten sich von klassischen Formularen à la "Jetzt Anfrage senden" abheben? Genau das machen wir hier: Sie erhalten echten Mehrwert schon <span className="font-semibold text-primary">vor</span> der Kontaktaufnahme – und nicht erst nach dem Absenden Ihrer Daten.
+  Sie möchten sich von klassischen Formularen à la "Jetzt Anfrage senden" abheben? Genau das machen wir hier: Ihre Kunden erhalten echten Mehrwert schon <span className="font-semibold text-primary">vor</span> der Kontaktaufnahme – und nicht erst nach dem Absenden Ihrer Daten.
   <br /><br />
   Ob smarte Klickstrecken wie diese, automatisierte Prozesse oder individuelle Digitalisierungen – ich unterstütze Sie gerne dabei, Ihre Abläufe zu modernisieren und nachhaltig Zeit und Geld zu sparen. 
   <br /><br />
