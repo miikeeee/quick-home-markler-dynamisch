@@ -204,9 +204,7 @@ export const ResultsPage: React.FC<ResultsPageProps> = ({
 
   // Optional: WhatsApp-Link vorbereiten
 const waLink = maklerTel
-  ? `https://wa.me/${maklerTel.replace(/\D/g, '')}?text=Hallo%20${encodeURIComponent(
-      maklerName || 'Mike'
-    )}%2C%20ich%20interessiere%20mich%20für%20Ihre%20digitale%20Immobilien-Lösung.`
+  ? `https://wa.me/${maklerTel.replace(/\D/g, '')}?text=Hallo%20Mike%2C%20ich%20interessiere%20mich%20für%20Ihre%20digitale%20Immobilien-Lösung.`
   : '#';
 
   if (isLoadingComparison) {
