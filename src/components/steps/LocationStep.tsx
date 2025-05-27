@@ -15,38 +15,15 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   updateFormData,
   config
 }) => {
-  const maklerTel = config?.telefon || null;
-  const maklerAdresse = config?.adresse || null;
-  const maklerEmail = config?.leadEmail || null;
-  const maklerName = config?.maklerName || null;
-  const bueroStrasse = config?.bueroStrasse || null;
-  const bueroPLZ = config?.bueroPLZ || null;
-  const bueroStadt = config?.bueroStadt || null;
-  
-
-  const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 5);
-    setZipCode(value);
-    updateFormData({ zipCode: value.length === 5 ? value : null });
-  };
-
-  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setCity(value);
-    updateFormData({ city: value.trim().length > 0 ? value.trim() : null });
-  };
-
-  const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setStreet(value);
-    updateFormData({ street: value.trim().length > 0 ? value.trim() : null });
-  };
+  // Büro-Placeholder aus config:
+  const bueroPLZ = config?.bueroPLZ || "";
+  const bueroStadt = config?.bueroStadt || "";
+  const bueroStrasse = config?.bueroStrasse || "";
 
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h3 className="text-xl font-semibold mb-6">Standort der Immobilie</h3>
-        
         <div className="space-y-6 max-w-md mx-auto">
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">
@@ -54,36 +31,46 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={ bueroPLZ ||"12345"}
-              value={zipCode}
-              onChange={handleZipCodeChange}
+              placeholder={bueroPLZ || "12345"}
+              value={formData.zipCode || ""}
+              onChange={e =>
+                updateFormData({
+                  zipCode: e.target.value.replace(/\D/g, '').slice(0, 5)
+                })
+              }
               className="text-center text-xl h-14"
               maxLength={5}
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">
               Stadt/Ort *
             </label>
             <Input
               type="text"
-              placeholder={config?.officeCity || "z.B. München"}
-              value={city}
-              onChange={handleCityChange}
+              placeholder={bueroStadt || "z.B. München"}
+              value={formData.city || ""}
+              onChange={e =>
+                updateFormData({
+                  city: e.target.value.trim()
+                })
+              }
               className="text-center text-xl h-14"
             />
           </div>
-
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">
               Straße (optional)
             </label>
             <Input
               type="text"
-              placeholder={config?.officeStreet || "z.B. Musterstraße 123"}
-              value={street}
-              onChange={handleStreetChange}
+              placeholder={bueroStrasse || "z.B. Musterstraße 123"}
+              value={formData.street || ""}
+              onChange={e =>
+                updateFormData({
+                  street: e.target.value.trim()
+                })
+              }
               className="text-center text-lg h-12"
             />
             <p className="text-xs text-muted-foreground mt-2">
@@ -93,7 +80,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
         </div>
       </div>
 
-      {zipCode.length === 5 && city.length > 0 && (
+      {(formData.zipCode?.length === 5 && formData.city) && (
         <div className="text-center">
           <p className="text-success-600 font-medium">
             ✓ Standortangaben vollständig
