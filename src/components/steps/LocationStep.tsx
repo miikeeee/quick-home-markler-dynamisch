@@ -31,7 +31,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={bueroPLZ}
+              placeholder={bueroPLZ || "12345"}
               value={formData.zipCode || ""}
               onChange={e =>
                 updateFormData({
