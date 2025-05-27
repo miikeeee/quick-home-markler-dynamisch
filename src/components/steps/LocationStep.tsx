@@ -10,7 +10,8 @@ interface LocationStepProps {
 
 export const LocationStep: React.FC<LocationStepProps> = ({
   formData,
-  updateFormData
+  updateFormData,
+  maklerName
 }) => {
   const [zipCode, setZipCode] = useState(formData.zipCode || '');
   const [city, setCity] = useState(formData.city || '');
@@ -60,7 +61,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={config?.officeCity || "z.B. München"}
+              placeholder={config?.maklerName || "z.B. München"}
               value={city}
               onChange={handleCityChange}
               className="text-center text-xl h-14"
