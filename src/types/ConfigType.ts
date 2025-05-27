@@ -8,4 +8,7 @@ export type ConfigType = {
   officeStreet?: string;
   officeZip?: string;
   officeCity?: string;
+  bueroStrasse?: string;
+  bueroPLZ?: string;
+  bueroStadt?: string;
 };
