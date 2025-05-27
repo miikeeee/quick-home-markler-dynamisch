@@ -6,6 +6,7 @@ import { PropertyFormData } from '@/types/propertyTypes';
 interface LocationStepProps {
   formData: PropertyFormData;
   updateFormData: (data: Partial<PropertyFormData>) => void;
+  maklerName?: string;
 }
 
 export const LocationStep: React.FC<LocationStepProps> = ({
