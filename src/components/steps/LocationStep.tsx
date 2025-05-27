@@ -2,6 +2,7 @@ import { config } from "@/config";
 import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { PropertyFormData } from '@/types/propertyTypes';
+import { ConfigType } from "@/types/ConfigType";
 
 interface LocationStepProps {
   formData: PropertyFormData;
