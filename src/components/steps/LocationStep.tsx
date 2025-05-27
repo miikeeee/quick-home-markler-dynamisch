@@ -13,7 +13,7 @@ interface LocationStepProps {
 export const LocationStep: React.FC<LocationStepProps> = ({
   formData,
   updateFormData,
-  maklerName
+  config
 }) => {
   const [zipCode, setZipCode] = useState(formData.zipCode || '');
   const [city, setCity] = useState(formData.city || '');
