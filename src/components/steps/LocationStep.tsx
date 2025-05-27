@@ -15,9 +15,14 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   updateFormData,
   config
 }) => {
-  const [zipCode, setZipCode] = useState(formData.zipCode || '');
-  const [city, setCity] = useState(formData.city || '');
-  const [street, setStreet] = useState(formData.street || '');
+  const maklerTel = config?.telefon || null;
+  const maklerAdresse = config?.adresse || null;
+  const maklerEmail = config?.leadEmail || null;
+  const maklerName = config?.maklerName || null;
+  const bueroStrasse = config?.bueroStrasse || null;
+  const bueroPLZ = config?.bueroPLZ || null;
+  const bueroStadt = config?.bueroStadt || null;
+  
 
   const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 5);
@@ -49,7 +54,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={config?.officeZip ||"12345"}
+              placeholder={ {bueroStadt} ||"12345"}
               value={zipCode}
               onChange={handleZipCodeChange}
               className="text-center text-xl h-14"
