@@ -62,7 +62,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={config?.maklerName || "z.B. München"}
+              placeholder={maklerName || "z.B. München"}
               value={city}
               onChange={handleCityChange}
               className="text-center text-xl h-14"
