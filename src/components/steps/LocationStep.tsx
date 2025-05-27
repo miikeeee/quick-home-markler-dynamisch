@@ -45,12 +45,12 @@ export const LocationStep: React.FC<LocationStepProps> = ({
               Postleitzahl *
             </label>
             <Input
-              type="text"
-              placeholder={config?.officeZip ||"12345"}
-              value={zipCode}
-              onChange={handleZipCodeChange}
-              className="text-center text-xl h-14"
-              maxLength={5}
+               type="text"
+  placeholder={config?.officeZip || "12345"}
+  value={formData.zipCode || ""}
+  onChange={handleZipCodeChange}
+  className="text-center text-xl h-14"
+  maxLength={5}
             />
           </div>
 
