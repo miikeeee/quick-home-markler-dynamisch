@@ -54,7 +54,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={ {bueroStadt} ||"12345"}
+              placeholder={ bueroPLZ ||"12345"}
               value={zipCode}
               onChange={handleZipCodeChange}
               className="text-center text-xl h-14"
