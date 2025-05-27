@@ -30,14 +30,14 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
     setRoomCountInput(value);
     
     const numValue = parseInt(value);
-    if (!isNaN(numValue) && numValue >= 1 && numValue <= 15) {
+    if (!isNaN(numValue) && numValue >= 1 && numValue <= 6) {
       updateFormData({ roomCount: numValue });
     }
   };
 
   const getRoomLabel = (count: number) => {
     if (count === 1) return '1 Zimmer';
-    if (count >= 10) return `${count}+ Zimmer`;
+    if (count >= 6) return `${count}+ Zimmer`;
     return `${count} Zimmer`;
   };
 
@@ -67,13 +67,13 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
           value={[roomCountValue]}
           onValueChange={handleRoomCountChange}
           min={1}
-          max={15}
+          max={6}
           step={1}
           className="w-full"
         />
         <div className="flex justify-between text-sm text-muted-foreground mt-2">
           <span>1 Zimmer</span>
-          <span>15+ Zimmer</span>
+          <span>6+ Zimmer</span>
         </div>
       </div>
 
@@ -82,7 +82,7 @@ export const RoomCountStep: React.FC<RoomCountStepProps> = ({
           <Input
             type="number"
             min="1"
-            max="15"
+            max="6"
             value={roomCountInput}
             onChange={handleRoomCountInputChange}
             className="text-center text-lg font-semibold"
