@@ -7,7 +7,7 @@ import { ConfigType } from "@/types/ConfigType";
 interface LocationStepProps {
   formData: PropertyFormData;
   updateFormData: (data: Partial<PropertyFormData>) => void;
-  maklerName?: string;
+  config: ConfigType;
 }
 
 export const LocationStep: React.FC<LocationStepProps> = ({
