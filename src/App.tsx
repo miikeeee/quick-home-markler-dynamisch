@@ -31,6 +31,21 @@ const App = () => {
     }
   }, []);
 
+  if (loading) {
+    return <div>Lädt Konfiguration...</div>;
+  }
+
+  if (!config) {
+    return (
+      <div>
+        <h2>Konfiguration nicht gefunden</h2>
+        <p>
+          Für diese Subdomain wurde keine Konfiguration gefunden.<br />
+          Bitte wenden Sie sich an den Support.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
