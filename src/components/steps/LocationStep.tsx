@@ -16,9 +16,9 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   config
 }) => {
   // Büro-Placeholder aus config:
-  const bueroPLZPlaceholder = config?.officeZip || "12345";       
-  const bueroStadtPlaceholder = config?.officeCity || "z.B. München"; 
-  const bueroStrassePlaceholder = config?.officeStreet || "z.B. Musterstraße 123";
+  const bueroPLZPlaceholder = config?.bueroPLZ || "12345";       
+  const bueroStadtPlaceholder = config?.bueroStadt || "z.B. München"; 
+  const bueroStrassePlaceholder = config?.bueroStrasse || "z.B. Musterstraße 123";
 
   return (
     <div className="space-y-8">
@@ -31,7 +31,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={bueroPLZPlaceholder || "12345"}
+              placeholder={bueroPLZPlaceholder}
               value={formData.zipCode || ""}
               onChange={e =>
                 updateFormData({
@@ -48,7 +48,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={bueroStadt || "z.B. München"}
+              placeholder={bueroStadtPlaceholder}
               value={formData.city || ""}
               onChange={e =>
                 updateFormData({
@@ -64,7 +64,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             </label>
             <Input
               type="text"
-              placeholder={bueroStrasse || "z.B. Musterstraße 123"}
+              placeholder={bueroStrassePlaceholder}
               value={formData.street || ""}
               onChange={e =>
                 updateFormData({
