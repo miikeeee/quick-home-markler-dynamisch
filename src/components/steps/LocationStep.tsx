@@ -15,6 +15,13 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   updateFormData,
   config
 }) => {
+
+  console.log("Config in LocationStep:", JSON.stringify(config, null, 2));
+  console.log("config?.bueroPLZ:", config?.bueroPLZ);
+  console.log("config?.bueroStadt:", config?.bueroStadt);
+  console.log("config?.bueroStrasse:", config?.bueroStrasse);
+
+  
   // Büro-Placeholder aus config:
   const bueroPLZPlaceholder = config?.bueroPLZ || "12345";       
   const bueroStadtPlaceholder = config?.bueroStadt || "z.B. München"; 
