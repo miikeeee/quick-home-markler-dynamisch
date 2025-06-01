@@ -23,9 +23,9 @@ export const LocationStep: React.FC<LocationStepProps> = ({
 
   
   // Büro-Placeholder aus config:
-  const bueroPLZPlaceholder = config?.bueroPLZ || "12345";       
-  const bueroStadtPlaceholder = config?.bueroStadt || "z.B. München"; 
-  const bueroStrassePlaceholder = config?.bueroStrasse || "z.B. Musterstraße 123";
+  const bueroPLZPlaceholder = config?.bueroPLZ || "53604";       
+  const bueroStadtPlaceholder = config?.bueroStadt || "z.B. Bad Honnef"; 
+  const bueroStrassePlaceholder = config?.bueroStrasse || "z.B. Berck-Sur-Mer Str. 1";
 
   return (
     <div className="space-y-8">
