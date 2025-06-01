@@ -82,23 +82,23 @@ export const FormContainer: React.FC<FormContainerProps> = ({
       </div>
 
       {/* Impressum Link unten rechts */}
-      <button
-        onClick={() => setShowImpressum(true)}
-        className="fixed bottom-4 right-4 bg-white border border-gray-200 rounded-xl shadow-md px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 transition z-50"
-        aria-label="Impressum anzeigen"
-      >
-        Impressum
-      </button>
-      <button
-        onClick={() => setShowDatenschutz(true)}
-        className="bg-white border border-gray-200 rounded-xl shadow-md px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 transition"
-        aria-label="Datenschutz anzeigen"
-      >
-        Datenschutz
-      </button>
+      <div className="fixed bottom-4 right-4 flex flex-row gap-2 z-50">
+  <button
+    onClick={() => setShowImpressum(true)}
+    className="bg-white border border-gray-200 rounded-xl shadow-md px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 transition"
+    aria-label="Impressum anzeigen"
+  >
+    Impressum
+  </button>
+  <button
+    onClick={() => setShowDatenschutz(true)}
+    className="bg-white border border-gray-200 rounded-xl shadow-md px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 transition"
+    aria-label="Datenschutz anzeigen"
+  >
+    Datenschutz
+  </button>
+</div>
 
-      {/* Impressum Modal */}
-      {/* Impressum Modal */}
 {showImpressum && (
   <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
     <div className="bg-white rounded-2xl shadow-xl p-6 max-w-lg w-full relative overflow-y-auto max-h-[90vh]">
