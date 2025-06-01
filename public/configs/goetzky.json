@@ -1,11 +1,11 @@
 {
   "farbe": "#123456",
-  "anrede": "Willkommen bei Immobilien Werning",
-  "maklerName": "Immobilien Werning",
+  "anrede": "Willkommen bei Götzky Immobilien",
+  "maklerName": "Götzky Immobilien",
   "leadEmail": "mike@nocodestud.io",
   "telefon": "+49 173 8376392",
   "adresse": "Rosenweg 21, 53604 Bad Honnef",
-  "bueroStrasse": "Am Berghang 10",
-  "bueroPLZ": "53639",
-  "bueroStadt": "Königswinter"
+  "bueroStrasse": "Rosenweg 21",
+  "bueroPLZ": "53604",
+  "bueroStadt": "Bad Honnef"
 }
